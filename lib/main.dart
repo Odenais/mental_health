@@ -5,6 +5,7 @@ import 'package:mental_health/pages/chat/chat.dart';
 import 'package:mental_health/pages/home/home.dart';
 import 'package:mental_health/pages/login/login.dart';
 import 'package:mental_health/pages/signup/signup.dart';
+import 'package:mental_health/pages/signup/signup_profile.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -34,6 +35,7 @@ class MyApp extends StatelessWidget {
       home: AuthWrapper(), // Aquí usamos el AuthWrapper
       routes: {
         '/signup': (context) => SignupPage(),
+        '/signupProfile': (context) => SignupProfilePage(),
         '/home': (context) => HomePage(),
         '/login': (context) => LoginPage(),
         '/chat': (context) => ChatbotPage(),

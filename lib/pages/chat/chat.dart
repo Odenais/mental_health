@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_generative_ai/google_generative_ai.dart';
 import 'package:mental_health/config.dart';
@@ -149,15 +150,57 @@ class _ChatbotPageState extends State<ChatbotPage> {
           color: isUser ? Colors.blueAccent : Colors.grey[300],
           borderRadius: BorderRadius.circular(12.0),
         ),
-        child: Text(
-          message['text'] ?? '',
-          style: TextStyle(
-            color: isUser ? Colors.white : Colors.black87,
-            fontSize: 16.0,
+        child: RichText(
+          text: TextSpan(
+            children: _formatMessage(message['text'] ?? ''),
+            style: TextStyle(
+              color: isUser ? Colors.white : Colors.black87,
+              fontSize: 16.0,
+            ),
           ),
         ),
       ),
     );
+  }
+
+  List<TextSpan> _formatMessage(String message) {
+    List<TextSpan> spans = [];
+    RegExp regExp = RegExp(r"\*(\s\*\*(.*?)\*\*)|\*\*(.*?)\*\*|\*(.*?)\n?");
+    int lastMatchEnd = 0;
+
+    for (var match in regExp.allMatches(message)) {
+      if (match.start > lastMatchEnd) {
+        spans.add(TextSpan(text: message.substring(lastMatchEnd, match.start)));
+      }
+
+      if (match.group(2) != null) {
+        // Para viñetas con negritas: * **texto**
+        spans.add(TextSpan(
+          text: "• ${match.group(2)}",
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ));
+      } else if (match.group(3) != null) {
+        // Solo texto en negritas: **texto**
+        spans.add(TextSpan(
+          text: match.group(3),
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ));
+      } else if (match.group(4) != null) {
+        // Solo viñetas sin negritas: * texto
+        spans.add(TextSpan(
+          text: "*",
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ));
+      }
+
+      lastMatchEnd = match.end;
+    }
+
+    if (lastMatchEnd < message.length) {
+      spans.add(TextSpan(text: message.substring(lastMatchEnd)));
+    }
+
+    return spans;
   }
 
   void handleSubmitted(String text) {
@@ -181,6 +224,34 @@ class _ChatbotPageState extends State<ChatbotPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Chatbot'),
+        actions: [
+          PopupMenuButton<String>(
+            onSelected: (value) {
+              if (value == 'logout') {
+                FirebaseAuth.instance.signOut();
+                Navigator.popAndPushNamed(context, '/login');
+              } else if(value == 'home'){
+                Navigator.popAndPushNamed(context, '/home');
+              }
+            },
+            itemBuilder: (BuildContext context) {
+              return [
+                PopupMenuItem<String>(
+                  value: 'home',
+                  child: Text('Inicio'),
+                ),
+                PopupMenuItem<String>(
+                  value: 'profile',
+                  child: Text('Perfil'),
+                ),
+                PopupMenuItem<String>(
+                  value: 'logout',
+                  child: Text('Cerrar Sesión'),
+                ),
+              ];
+            },
+          ),
+        ],
       ),
       body: Stack(
         children: [

@@ -1,14 +1,48 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:mental_health/services/profile.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
+  @override
+  _HomePageState createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  final Profile db = Profile();
+  String? _apodo;
+
+  @override
+  void initState() {
+    super.initState();
+    fetchAndSetApodo();
+  }
+
+  Future<void> fetchAndSetApodo() async {
+    final User? user = FirebaseAuth.instance.currentUser;
+
+    try {
+      String? email = user?.email; // Asegúrate de que `user` no sea null
+      if (email != null) {
+        String? apodo = await db.getApodoByCorreo(email);
+        print('El apodo es: $apodo');
+        setState(() {
+          _apodo = apodo;
+        });
+      } else {
+        print('El correo electrónico es nulo');
+      }
+    } catch (e) {
+      print('Error al obtener el apodo: $e');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final User? user = FirebaseAuth.instance.currentUser; // Obtener usuario autenticado
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('${user?.email ?? 'Usuario'}'),
+        title: Text('${_apodo ?? 'Usuario'}'),
         automaticallyImplyLeading: false, // Elimina el botón de regresar
         actions: [
           PopupMenuButton<String>(
@@ -17,7 +51,6 @@ class HomePage extends StatelessWidget {
                 FirebaseAuth.instance.signOut();
                 Navigator.popAndPushNamed(context, '/login');
               } else if (value == 'chat') {
-                FirebaseAuth.instance.signOut();
                 Navigator.popAndPushNamed(context, '/chat');
               }
             },
@@ -26,10 +59,6 @@ class HomePage extends StatelessWidget {
                 PopupMenuItem<String>(
                   value: 'profile',
                   child: Text('Perfil'),
-                ),
-                PopupMenuItem<String>(
-                  value: 'settings',
-                  child: Text('Configuración'),
                 ),
                 PopupMenuItem<String>(
                   value: 'chat',
