@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "22998112511",
+    "project_id": "mental-health-24303",
+    "storage_bucket": "mental-health-24303.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:22998112511:android:22a47e3b73642ce24814ca",
+        "android_client_info": {
+          "package_name": "com.lombax.mental_health"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBEdxP2zonZAww1fBZXrTGh5x7f2n5od8g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
