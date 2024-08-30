@@ -56,16 +56,16 @@ class _ChatbotPageState extends State<ChatbotPage> {
           print('onStatus: $status');
           switch (status) {
             case 'initialized':
-              print('Reconocimiento de voz inicializado correctamente.');
+              showSnackBar('Reconocimiento de voz inicializado correctamente.');
               break;
             case 'listening':
-              print('Reconocimiento de voz está escuchando.');
+              showSnackBar('Reconocimiento de voz está escuchando.');
               break;
             case 'notListening':
-              print('Reconocimiento de voz no está escuchando.');
+              showSnackBar('Reconocimiento de voz no está escuchando.');
               break;
             case 'done':
-              print('Reconocimiento de voz ha terminado.');
+              showSnackBar('Reconocimiento de voz ha terminado.');
               handleSubmitted(textController.text);
               setState(() => isListening = false);
               speech.stop();
