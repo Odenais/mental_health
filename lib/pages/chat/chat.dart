@@ -4,6 +4,10 @@ import 'package:google_generative_ai/google_generative_ai.dart';
 import 'package:mental_health/config.dart';
 import 'package:speech_to_text/speech_to_text.dart' as stt;
 import 'package:avatar_glow/avatar_glow.dart';
+import 'package:flutter_tts/flutter_tts.dart';
+
+import '../../services/profile.dart';
+
 
 class ChatbotPage extends StatefulWidget {
   @override
@@ -14,6 +18,8 @@ class _ChatbotPageState extends State<ChatbotPage> {
   final TextEditingController textController = TextEditingController();
   final ScrollController scrollController = ScrollController();
   final stt.SpeechToText speech = stt.SpeechToText();
+  late FlutterTts _flutterTts;
+  final Profile _profile = Profile();
 
   bool loading = false;
   bool isListening = false;
@@ -23,7 +29,7 @@ class _ChatbotPageState extends State<ChatbotPage> {
   @override
   void initState() {
     super.initState();
-    //initSpeech();
+    _flutterTts = FlutterTts();
   }
 
   @override
@@ -31,6 +37,14 @@ class _ChatbotPageState extends State<ChatbotPage> {
     textController.dispose();
     scrollController.dispose();
     super.dispose();
+  }
+
+  Future<void> _speakText(String text) async {
+    // Eliminar todos los asteriscos del texto
+    String cleanText = text.replaceAll(RegExp(r'\*'), '');
+
+    // Reproduce el texto limpio usando el motor de texto a voz
+    await _flutterTts.speak(cleanText);
   }
 
   /*Future<void> initSpeech() async {
@@ -111,10 +125,17 @@ class _ChatbotPageState extends State<ChatbotPage> {
 
     try {
       final response = await model.generateContent(content);
-      addMessage('User', query);
-      addMessage('Bot', response.text ?? 'No response text.');
+      String botResponse = response.text ?? 'No response text.';
+
+      // Agregar el mensaje del usuario y del bot al chat
+
+      addMessage('Bot', botResponse);
+
+      // Llamar al método para que lea el texto del bot
+      await _speakText(botResponse);
+
     } catch (e) {
-      addMessage('User', query);
+      addMessage('User', query); // Mostrar la consulta completa en caso de error
       addMessage('Bot', 'Error: ${e.toString()}');
     } finally {
       textController.clear();
@@ -125,11 +146,13 @@ class _ChatbotPageState extends State<ChatbotPage> {
     }
   }
 
+
   void addMessage(String role, String text) {
     setState(() {
       messages.add({'role': role, 'text': text});
     });
   }
+
 
   void scrollToEnd() {
     Future.delayed(Duration(milliseconds: 100), () {
@@ -203,11 +226,27 @@ class _ChatbotPageState extends State<ChatbotPage> {
     return spans;
   }
 
-  void handleSubmitted(String text) {
-    final query = text.trim();
-    if (query.isNotEmpty) {
-      generateContent(query);
+  Future<void> handleSubmitted(String text) async {
+    String? apodo = await getApodo();
+    String msgapodo = "(Mi nombre es $apodo)";
+
+    // Agregar el mensaje original del usuario a la interfaz
+    addMessage('User', text);
+
+    // Preparar la consulta para el modelo, agregando "Mi nombre es..."
+    String query = text + msgapodo;
+
+    print(query); // Mostrar la consulta completa en la consola para depuración
+
+    if (query.trim().isNotEmpty) {
+      generateContent(query); // Enviar la consulta al modelo
     }
+  }
+
+
+  Future<String?> getApodo() async{
+    String correo = await _profile.initializeEmail();
+    return _profile.getDataByCorreo(correo, "Apodo");
   }
 
   void showSnackBar(String message) {
