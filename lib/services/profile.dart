@@ -1,4 +1,5 @@
 import "package:cloud_firestore/cloud_firestore.dart";
+import "package:firebase_auth/firebase_auth.dart";
 
 class Profile {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -22,20 +23,13 @@ class Profile {
     }
   }
 
+  /*
   Future<String?> getApodoByCorreo(String correo) async {
     try {
-      // Obtén una referencia a la colección 'users'
       var collection = _firestore.collection('users');
-
-      // Realiza una consulta para encontrar el documento con el correo dado
       var querySnapshot = await collection.where('Correo', isEqualTo: correo).get();
-
-      // Verifica si se encontraron documentos
       if (querySnapshot.docs.isNotEmpty) {
-        // Obtén el primer documento de la consulta
         var document = querySnapshot.docs.first;
-
-        // Obtén el campo 'Apodo' del documento
         var apodo = document.get('Apodo');
 
         return apodo as String?;
@@ -46,6 +40,83 @@ class Profile {
     } catch (e) {
       print('Error al obtener el apodo: $e');
       return null;
+    }
+  }*/
+
+  Future<String?> getDataByCorreo(String correo, String data) async {
+    try {
+      var collection = _firestore.collection('users');
+      var querySnapshot = await collection.where('Correo', isEqualTo: correo).get();
+      if (querySnapshot.docs.isNotEmpty) {
+        var document = querySnapshot.docs.first;
+        var aux = document.get(data);
+
+        return aux as String?;
+      } else {
+        print('No se encontró un usuario con el correo proporcionado');
+        return null;
+      }
+    } catch (e) {
+      print('Error al obtener $data : $e');
+      return null;
+    }
+  }
+
+  // Método para obtener la fecha de nacimiento por correo
+  Future<DateTime?> getFechaNacimientoByCorreo(String email) async {
+    try {
+      var collection = _firestore.collection('users');
+      var querySnapshot = await collection.where('Correo', isEqualTo: email).get();
+      if (querySnapshot.docs.isNotEmpty) {
+        var document = querySnapshot.docs.first;
+        var fechaDeNacimientoData = document.get('Fecha de nacimiento');
+
+        // Depurar para ver qué se está obteniendo
+        print("Dato de 'Fecha de nacimiento': $fechaDeNacimientoData");
+
+        // Verificar si es un Timestamp
+        if (fechaDeNacimientoData is Timestamp) {
+          return fechaDeNacimientoData.toDate(); // Convertir a DateTime
+        } else {
+          print(
+              "El campo 'Fecha de nacimiento' no es un Timestamp o está vacío.");
+          return null;
+        }
+      }
+    } catch (e) {
+      print("Error al obtener la fecha de nacimiento: $e");
+      return null; // Retornar null en caso de error
+    }
+  }
+
+  String initializeEmail() {
+    final User? user = FirebaseAuth.instance.currentUser;
+    return user?.email ?? '';
+  }
+
+  // Método para actualizar los datos del usuario en Firestore usando una consulta
+  Future<void> updateData(String email, Map<String, dynamic> data) async {
+    try {
+      // Obtén la colección de usuarios
+      var collection = _firestore.collection('users');
+
+      // Realiza una consulta para obtener el documento que coincide con el correo electrónico
+      var querySnapshot = await collection.where('Correo', isEqualTo: email).get();
+
+      if (querySnapshot.docs.isEmpty) {
+        throw Exception('No se encontró el usuario con el correo proporcionado');
+      }
+
+      // Supongamos que solo hay un documento que coincide
+      var document = querySnapshot.docs.first;
+
+      // Actualiza los datos en Firestore
+      await document.reference.update(data);
+
+      print('Datos actualizados con éxito');
+    } catch (e) {
+      print('Error al actualizar los datos: $e');
+      throw e; // Opcional: relanzar la excepción para manejarla en la interfaz de usuario
     }
   }
 }

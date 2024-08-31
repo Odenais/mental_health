@@ -224,6 +224,10 @@ class _ChatbotPageState extends State<ChatbotPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Chatbot'),
+        centerTitle: true,
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        automaticallyImplyLeading: false,
         actions: [
           PopupMenuButton<String>(
             onSelected: (value) {
@@ -232,6 +236,8 @@ class _ChatbotPageState extends State<ChatbotPage> {
                 Navigator.popAndPushNamed(context, '/login');
               } else if(value == 'home'){
                 Navigator.popAndPushNamed(context, '/home');
+              } else if(value == 'profile'){
+                Navigator.popAndPushNamed(context, '/profileShow');
               }
             },
             itemBuilder: (BuildContext context) {

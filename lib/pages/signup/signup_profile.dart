@@ -13,10 +13,12 @@ class _SignupProfilePageState extends State<SignupProfilePage> {
   final _formKey = GlobalKey<FormState>();
 
   // Controladores de texto
-  final TextEditingController _nombreCompletoController = TextEditingController();
+  final TextEditingController _nombreCompletoController =
+      TextEditingController();
   final TextEditingController _apodoController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _fechaNacimientoController = TextEditingController();
+  final TextEditingController _fechaNacimientoController =
+      TextEditingController();
 
   DateTime? _fechaNacimiento;
   bool _isLoading = false;
@@ -26,16 +28,16 @@ class _SignupProfilePageState extends State<SignupProfilePage> {
   @override
   void initState() {
     super.initState();
-    _initializeEmail();
+    _emailController.text = _profile.initializeEmail();
   }
 
   // Inicializa el correo electrónico del usuario autenticado
-  void _initializeEmail() {
+  /*void _initializeEmail() {
     final User? user = FirebaseAuth.instance.currentUser;
     if (user != null) {
       _emailController.text = user.email ?? ''; // Asigna el correo electrónico al controlador
     }
-  }
+  }*/
 
   // Función que se ejecuta al enviar el formulario
   Future<void> _submitForm() async {
@@ -178,17 +180,17 @@ class _SignupProfilePageState extends State<SignupProfilePage> {
                 _isLoading
                     ? Center(child: CircularProgressIndicator())
                     : ElevatedButton(
-                  onPressed: _submitForm,
-                  child: Text('Registrar'),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.blueAccent,
-                    padding: EdgeInsets.symmetric(vertical: 16),
-                    textStyle: TextStyle(fontSize: 18),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                  ),
-                ),
+                        onPressed: _submitForm,
+                        child: Text('Registrar'),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.blueAccent,
+                          padding: EdgeInsets.symmetric(vertical: 16),
+                          textStyle: TextStyle(fontSize: 18),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                        ),
+                      ),
               ],
             ),
           ),

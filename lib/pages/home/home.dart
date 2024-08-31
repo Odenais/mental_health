@@ -8,7 +8,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final Profile db = Profile();
+  final Profile _profile = Profile();
   String? _apodo;
 
   @override
@@ -23,7 +23,7 @@ class _HomePageState extends State<HomePage> {
     try {
       String? email = user?.email; // Asegúrate de que `user` no sea null
       if (email != null) {
-        String? apodo = await db.getApodoByCorreo(email);
+        String? apodo = await _profile.getDataByCorreo(email, "Apodo");
         print('El apodo es: $apodo');
         setState(() {
           _apodo = apodo;
@@ -52,6 +52,8 @@ class _HomePageState extends State<HomePage> {
                 Navigator.popAndPushNamed(context, '/login');
               } else if (value == 'chat') {
                 Navigator.popAndPushNamed(context, '/chat');
+              } else if (value == 'profile'){
+                Navigator.popAndPushNamed(context, '/profileShow');
               }
             },
             itemBuilder: (BuildContext context) {
