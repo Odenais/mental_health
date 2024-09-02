@@ -1,8 +1,10 @@
 import 'dart:math';
+import 'package:avatar_glow/avatar_glow.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:mental_health/services/profile.dart';
 import 'package:flutter_tts/flutter_tts.dart';
+import 'package:mental_health/pages/chat/chat.dart';
 import 'package:intl/intl.dart';
 
 class HomePage extends StatefulWidget {
@@ -11,6 +13,8 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+
+
   final Profile _profile = Profile();
   String? _apodo;
 
@@ -109,45 +113,182 @@ class _HomePageState extends State<HomePage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('${_apodo ?? 'Usuario'}'),
-        automaticallyImplyLeading: false, // Elimina el botón de regresar
+        title: Center(child: Text('Mental Healt'),),
+        leading: PopupMenuButton<String>(
+          onSelected: (value) {
+            // Realizar acciones según la selección del menú
+            if(value == 'logout'){
+              FirebaseAuth.instance.signOut();
+              Navigator.popAndPushNamed(context, '/login');
+            }else{
+              Navigator.popAndPushNamed(context, '/$value');
+            }
+
+            print('Opción seleccionada: $value');
+          },
+          itemBuilder: (BuildContext context) {
+            return [
+              PopupMenuItem(
+                value: 'profileShow',
+                child: Text('Perfil'),
+              ),
+              PopupMenuItem(
+                value: 'chat',
+                child: Text('Chat Bot'),
+              ),
+              PopupMenuItem(
+                value: 'logout',
+                child: Text('Cerrar Sesión'),
+              ),
+            ];
+          },
+          icon: Icon(Icons.menu), // Ícono de menú
+        ),
         actions: [
-          PopupMenuButton<String>(
-            onSelected: (value) {
-              if (value == 'logout') {
-                FirebaseAuth.instance.signOut();
-                Navigator.popAndPushNamed(context, '/login');
-              } else if (value == 'chat') {
-                Navigator.popAndPushNamed(context, '/chat');
-              } else if (value == 'profile'){
-                Navigator.popAndPushNamed(context, '/profileShow');
-              }
-            },
-            itemBuilder: (BuildContext context) {
-              return [
-                PopupMenuItem<String>(
-                  value: 'profile',
-                  child: Text('Perfil'),
-                ),
-                PopupMenuItem<String>(
-                  value: 'chat',
-                  child: Text('Chatbot'),
-                ),
-                PopupMenuItem<String>(
-                  value: 'logout',
-                  child: Text('Cerrar Sesión'),
-                ),
-              ];
-            },
-          ),
+          IconButton(onPressed: (){Navigator.popAndPushNamed(context, '/profileShow');}, icon: Icon(Icons.account_circle))
         ],
       ),
-      body: Padding(
+      body: ListView(
+        padding: EdgeInsets.all(30),
+        children: [
+          Container(
+            decoration: BoxDecoration(
+
+            ),
+            child: Center(
+              child: Text(
+                'Bienvenido, ${user?.email ?? 'Usuario'}',
+                style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.blue.shade700,
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ),
+          ),
+
+          SizedBox(height: 45,),
+          
+          Column(
+
+            children: [
+              Container(
+
+                height: MediaQuery.of(context).size.height-600,
+                decoration: BoxDecoration(
+                ),
+                child: ElevatedButton(
+
+                    onPressed: (){},
+                    child: Icon(
+                      Icons.mic,
+                      size: MediaQuery.of(context).size.width-100,
+                    )
+                ),
+              ),
+            ],
+          ),
+
+
+          SizedBox(height: 45,),
+
+          Container(
+            width: 300, // Ancho del contenedor
+            height: 300, // Alto del contenedor
+            padding: EdgeInsets.all(8), // Espacio alrededor del contenido
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Column(
+              children: [
+                Expanded(
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: GestureDetector(
+                          onTap: () {
+                            print('Test presionado'); // Acción cuando se presiona
+                          },
+                          child: Container(
+                            margin: EdgeInsets.all(4),
+                            decoration: BoxDecoration(
+                              color: Colors.deepPurple[200],
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Center(child: Text('Test')),
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        child: GestureDetector(
+                          onTap: () {
+                            print('Opción 2 presionada'); // Acción cuando se presiona
+                          },
+                          child: Container(
+                            margin: EdgeInsets.all(4),
+                            decoration: BoxDecoration(
+                              color: Colors.deepPurple[200],
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Center(child: Text('Opción 2')),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Expanded(
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: GestureDetector(
+                          onTap: () {
+                            print('Opción 3 presionada'); // Acción cuando se presiona
+                          },
+                          child: Container(
+                            margin: EdgeInsets.all(4),
+                            decoration: BoxDecoration(
+                              color: Colors.deepPurple[200],
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Center(child: Text('Opción 3')),
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        child: GestureDetector(
+                          onTap: () {
+                            print('Opción 4 presionada'); // Acción cuando se presiona
+                          },
+                          child: Container(
+                            margin: EdgeInsets.all(4),
+                            decoration: BoxDecoration(
+                              color: Colors.deepPurple[200],
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Center(child: Text('Opción 4')),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          )
+
+        ],
+      ),
+      /*Padding(
+
         padding: const EdgeInsets.all(16.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+
+
             Text(
               'Bienvenido, ${user?.email ?? 'Usuario'}',
               style: TextStyle(
@@ -157,6 +298,26 @@ class _HomePageState extends State<HomePage> {
               ),
               textAlign: TextAlign.center,
             ),
+
+            SizedBox(
+              height: 50,
+            ),
+
+            Container(
+              height: MediaQuery.of(context).size.height-550,
+              decoration: BoxDecoration(
+
+              ),
+              child: ElevatedButton(
+
+                  onPressed: (){},
+                  child: Icon(
+                    Icons.mic,
+                    size: MediaQuery.of(context).size.width-100,
+                  )
+              ),
+            ),
+
             SizedBox(height: 32),
             ElevatedButton(
               onPressed: () async {
@@ -172,7 +333,7 @@ class _HomePageState extends State<HomePage> {
             ),
           ],
         ),
-      ),
+      ),*/
     );
   }
 }
