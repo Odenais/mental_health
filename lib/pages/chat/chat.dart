@@ -8,6 +8,7 @@ import 'package:flutter_tts/flutter_tts.dart';
 
 import '../../services/profile.dart';
 
+import 'package:rive/rive.dart' as rive;
 
 class ChatbotPage extends StatefulWidget {
   @override
@@ -78,6 +79,7 @@ class _ChatbotPageState extends State<ChatbotPage> {
               break;
             case 'notListening':
               showSnackBar('Reconocimiento de voz no está escuchando.');
+              error(true);
               break;
             case 'done':
               showSnackBar('Reconocimiento de voz ha terminado.');
@@ -96,18 +98,18 @@ class _ChatbotPageState extends State<ChatbotPage> {
       if (available) {
         setState(() => isListening = true);
         speech.listen(
-          onResult: (val) =>
-              setState(() {
-                textController.text = val.recognizedWords;
-                if (val.hasConfidenceRating && val.confidence > 0) {
-                  confidence = val.confidence;
-                }
-              }),
+          onResult: (val) => setState(() {
+            textController.text = val.recognizedWords;
+            if (val.hasConfidenceRating && val.confidence > 0) {
+              confidence = val.confidence;
+            }
+          }),
         );
       }
+    } else {
+      isDownloading(true);
     }
   }
-
 
   Future<void> generateContent(String query) async {
     setState(() {
@@ -130,12 +132,14 @@ class _ChatbotPageState extends State<ChatbotPage> {
       // Agregar el mensaje del usuario y del bot al chat
 
       addMessage('Bot', botResponse);
+      isChatting(false);
+      reset(true);
 
       // Llamar al método para que lea el texto del bot
       await _speakText(botResponse);
-
     } catch (e) {
-      addMessage('User', query); // Mostrar la consulta completa en caso de error
+      addMessage(
+          'User', query); // Mostrar la consulta completa en caso de error
       addMessage('Bot', 'Error: ${e.toString()}');
     } finally {
       textController.clear();
@@ -146,13 +150,11 @@ class _ChatbotPageState extends State<ChatbotPage> {
     }
   }
 
-
   void addMessage(String role, String text) {
     setState(() {
       messages.add({'role': role, 'text': text});
     });
   }
-
 
   void scrollToEnd() {
     Future.delayed(Duration(milliseconds: 100), () {
@@ -243,8 +245,7 @@ class _ChatbotPageState extends State<ChatbotPage> {
     }
   }
 
-
-  Future<String?> getApodo() async{
+  Future<String?> getApodo() async {
     String correo = await _profile.initializeEmail();
     return _profile.getDataByCorreo(correo, "Apodo");
   }
@@ -258,124 +259,206 @@ class _ChatbotPageState extends State<ChatbotPage> {
     );
   }
 
+  // COMPORTAMIENTO DEL AVATAR
+
+  rive.SMIInput<bool>? isNoInternet;
+  rive.SMIInput<bool>? isError;
+  rive.SMIInput<bool>? isChat;
+  rive.SMIInput<bool>? isReset;
+  rive.SMINumber? download;
+
+  late rive.StateMachineController? stateMachineController;
+
+  void isConnected(bool value) {
+    isNoInternet?.change(value);
+  }
+
+  void error(bool value) {
+    isError?.change(value);
+  }
+
+  void isChatting(bool value) {
+    isChat?.change(value);
+  }
+
+  void reset(bool value) {
+    isReset?.change(value);
+  }
+
+  var percent = 0;
+
+  void isDownloading(value) {
+    if (value) {
+      percent += 10;
+      download?.change(percent.toDouble());
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Chatbot'),
-        centerTitle: true,
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        automaticallyImplyLeading: false,
-        actions: [
-          PopupMenuButton<String>(
-            onSelected: (value) {
-              if (value == 'logout') {
-                FirebaseAuth.instance.signOut();
-                Navigator.popAndPushNamed(context, '/login');
-              } else if(value == 'home'){
-                Navigator.popAndPushNamed(context, '/home');
-              } else if(value == 'profile'){
-                Navigator.popAndPushNamed(context, '/profileShow');
-              }
-            },
-            itemBuilder: (BuildContext context) {
-              return [
-                PopupMenuItem<String>(
-                  value: 'home',
-                  child: Text('Inicio'),
-                ),
-                PopupMenuItem<String>(
-                  value: 'profile',
-                  child: Text('Perfil'),
-                ),
-                PopupMenuItem<String>(
-                  value: 'logout',
-                  child: Text('Cerrar Sesión'),
-                ),
-              ];
-            },
-          ),
-        ],
-      ),
-      body: Stack(
-        children: [
-          Column(
+        appBar: AppBar(
+          title: Text('Chatbot'),
+          centerTitle: true,
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          automaticallyImplyLeading: false,
+          actions: [
+            PopupMenuButton<String>(
+              onSelected: (value) {
+                if (value == 'logout') {
+                  FirebaseAuth.instance.signOut();
+                  Navigator.popAndPushNamed(context, '/login');
+                } else if (value == 'home') {
+                  Navigator.popAndPushNamed(context, '/home');
+                } else if (value == 'profile') {
+                  Navigator.popAndPushNamed(context, '/profileShow');
+                }
+              },
+              itemBuilder: (BuildContext context) {
+                return [
+                  PopupMenuItem<String>(
+                    value: 'home',
+                    child: Text('Inicio'),
+                  ),
+                  PopupMenuItem<String>(
+                    value: 'profile',
+                    child: Text('Perfil'),
+                  ),
+                  PopupMenuItem<String>(
+                    value: 'logout',
+                    child: Text('Cerrar Sesión'),
+                  ),
+                ];
+              },
+            ),
+          ],
+        ),
+        body: Container(
+          decoration: BoxDecoration(color: Colors.black),
+          child: Stack(
             children: [
-              Expanded(
-                child: ListView.builder(
-                  controller: scrollController,
-                  padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
-                  itemCount: messages.length,
-                  itemBuilder: (context, index) {
-                    return buildMessage(messages[index]);
-                  },
-                ),
-              ),
-              if (loading)
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Center(child: CircularProgressIndicator()),
-                ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 16.0),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: TextField(
-                        controller: textController,
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(),
-                          hintText: 'Escribe un mensaje',
-                        ),
-                        maxLines: null,
-                        onSubmitted: handleSubmitted,
-                        keyboardType: TextInputType.text,
-                        textInputAction: TextInputAction.send,
-                      ),
-                    ),
-                    SizedBox(width: 8.0),
-                    IconButton(
-                      icon: Icon(Icons.send),
-                      onPressed: () {
-                        handleSubmitted(textController.text);
+              Column(
+                children: [
+                  Expanded(
+                      child: Container(
+                          width: MediaQuery.of(context).size.width,
+                          child: GestureDetector(
+                            onTap: startListening,
+                            child: rive.RiveAnimation.asset(
+                              'assets/robocat.riv',
+                              stateMachines: const ["State Machine"],
+                              onInit: (artBoard) {
+                                stateMachineController =
+                                    rive.StateMachineController.fromArtboard(
+                                  artBoard,
+                                  "State Machine", // it must be the same as the Rive state machine name
+                                );
+                                if (stateMachineController == null) return;
+                                artBoard.addController(stateMachineController!);
+
+                                isNoInternet = stateMachineController
+                                    ?.findInput("No Internet");
+                                isError =
+                                    stateMachineController?.findInput("Error");
+                                isChat =
+                                    stateMachineController?.findInput("Chat");
+                                isReset =
+                                    stateMachineController?.findInput("Reset");
+                                download =
+                                    stateMachineController?.findSMI("Download");
+                              },
+                            ),
+                          ))),
+                  Expanded(
+                    child: ListView.builder(
+                      controller: scrollController,
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
+                      itemCount: messages.length,
+                      itemBuilder: (context, index) {
+                        return buildMessage(messages[index]);
                       },
                     ),
-                  ],
+                  ),
+                  //if (loading)
+                  // Padding(
+                  //   padding: const EdgeInsets.all(8.0),
+                  //   child: Center(child: CircularProgressIndicator()),
+                  // ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 8.0, vertical: 16.0),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: TextField(
+                            style: TextStyle(color: Colors.white),
+                            controller: textController,
+                            decoration: InputDecoration(
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(15.0),
+                                borderSide: BorderSide(color: Colors.white),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(15.0),
+                                borderSide:
+                                    BorderSide(color: Colors.blueAccent),
+                              ),
+                              hintText: 'Escribe un mensaje',
+                              hintStyle: TextStyle(color: Colors.white),
+                            ),
+                            maxLines: null,
+                            onSubmitted: handleSubmitted,
+                            keyboardType: TextInputType.text,
+                            textInputAction: TextInputAction.send,
+                            cursorColor: Colors.white,
+                          ),
+                        ),
+                        SizedBox(width: 8.0),
+                        IconButton(
+                          icon: Icon(Icons.send),
+                          onPressed: () {
+                            handleSubmitted(textController.text);
+                            isChatting(true);
+                          },
+                          color: Colors.blueAccent,
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+              Positioned(
+                bottom: 80.0,
+                left: MediaQuery.of(context).size.width / 2 - 40,
+                child: GestureDetector(
+                  onTap: startListening,
+                  // Ahora alterna entre escuchar y detener
+                  child: AvatarGlow(
+                    startDelay: Duration(milliseconds: 1000),
+                    glowColor: Colors.blueAccent.withOpacity(0.3),
+                    animate: isListening,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        gradient: LinearGradient(
+                          colors: [Colors.blueAccent, Colors.lightBlueAccent],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                        ),
+                      ),
+                      child: Icon(
+                        isListening ? Icons.mic : Icons.mic_none,
+                        size: 48.0,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
                 ),
               ),
             ],
           ),
-          Positioned(
-            bottom: 80.0,
-            left: MediaQuery.of(context).size.width / 2 - 40,
-            child: GestureDetector(
-              onTap: startListening, // Ahora alterna entre escuchar y detener
-              child: AvatarGlow(
-                startDelay: Duration(milliseconds: 1000),
-                glowColor: Colors.blueAccent.withOpacity(0.3),
-                animate: isListening,
-                child: Container(
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    gradient: LinearGradient(
-                      colors: [Colors.blueAccent, Colors.lightBlueAccent],
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                    ),
-                  ),
-                  child: Icon(
-                    isListening ? Icons.mic : Icons.mic_none,
-                    size: 48.0,
-                    color: Colors.white,
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
+        ));
   }
 }
-
