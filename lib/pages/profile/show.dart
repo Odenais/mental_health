@@ -4,6 +4,8 @@ import 'package:mental_health/services/profile.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+import '../../widgets/menu.dart';
+
 class ProfileShowPage extends StatefulWidget {
   @override
   _ProfileShowPageState createState() => _ProfileShowPageState();
@@ -64,38 +66,9 @@ class _ProfileShowPageState extends State<ProfileShowPage> {
         centerTitle: true,
         backgroundColor: Colors.transparent,
         elevation: 0,
-        automaticallyImplyLeading: false,
-        actions: [
-          PopupMenuButton<String>(
-            onSelected: (value) {
-              if (value == 'logout') {
-                FirebaseAuth.instance.signOut();
-                Navigator.popAndPushNamed(context, '/login');
-              } else if (value == 'chat') {
-                Navigator.popAndPushNamed(context, '/chat');
-              } else if (value == 'home') {
-                Navigator.popAndPushNamed(context, '/home');
-              }
-            },
-            itemBuilder: (BuildContext context) {
-              return [
-                PopupMenuItem<String>(
-                  value: 'home',
-                  child: Text('Home'),
-                ),
-                PopupMenuItem<String>(
-                  value: 'chat',
-                  child: Text('Chatbot'),
-                ),
-                PopupMenuItem<String>(
-                  value: 'logout',
-                  child: Text('Cerrar Sesión'),
-                ),
-              ];
-            },
-          ),
-        ],
+        //automaticallyImplyLeading: false,
       ),
+      drawer: SidebarMenu(),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: _email == null

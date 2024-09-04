@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../widgets/menu.dart';
+
 class TestListPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -7,6 +9,7 @@ class TestListPage extends StatelessWidget {
       appBar: AppBar(
         title: Text("Lista de Tests"),
       ),
+      drawer: SidebarMenu(),
       body: ListView(
         children: [
           ListTile(

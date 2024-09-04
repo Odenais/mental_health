@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 
+import '../../widgets/menu.dart';
+
 
 class TechniquelsListPage extends StatelessWidget{
   
@@ -12,6 +14,7 @@ class TechniquelsListPage extends StatelessWidget{
       appBar: AppBar(
 
       ),
+      drawer: SidebarMenu(),
       body: ListView(
         children: [
           ListTile(

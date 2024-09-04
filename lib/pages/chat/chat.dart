@@ -10,6 +10,8 @@ import '../../services/profile.dart';
 
 import 'package:rive/rive.dart' as rive;
 
+import '../../widgets/menu.dart';
+
 class ChatbotPage extends StatefulWidget {
   @override
   _ChatbotPageState createState() => _ChatbotPageState();
@@ -302,38 +304,9 @@ class _ChatbotPageState extends State<ChatbotPage> {
           centerTitle: true,
           backgroundColor: Colors.transparent,
           elevation: 0,
-          automaticallyImplyLeading: false,
-          actions: [
-            PopupMenuButton<String>(
-              onSelected: (value) {
-                if (value == 'logout') {
-                  FirebaseAuth.instance.signOut();
-                  Navigator.popAndPushNamed(context, '/login');
-                } else if (value == 'home') {
-                  Navigator.popAndPushNamed(context, '/home');
-                } else if (value == 'profile') {
-                  Navigator.popAndPushNamed(context, '/profileShow');
-                }
-              },
-              itemBuilder: (BuildContext context) {
-                return [
-                  PopupMenuItem<String>(
-                    value: 'home',
-                    child: Text('Inicio'),
-                  ),
-                  PopupMenuItem<String>(
-                    value: 'profile',
-                    child: Text('Perfil'),
-                  ),
-                  PopupMenuItem<String>(
-                    value: 'logout',
-                    child: Text('Cerrar Sesión'),
-                  ),
-                ];
-              },
-            ),
-          ],
+          //automaticallyImplyLeading: false,
         ),
+        drawer: SidebarMenu(),
         body: Container(
           decoration: BoxDecoration(color: Colors.black),
           child: Stack(

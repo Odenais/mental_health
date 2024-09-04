@@ -7,6 +7,8 @@ import 'package:flutter_tts/flutter_tts.dart';
 import 'package:mental_health/pages/chat/chat.dart';
 import 'package:intl/intl.dart';
 
+import '../../widgets/menu.dart';
+
 class HomePage extends StatefulWidget {
   @override
   _HomePageState createState() => _HomePageState();
@@ -114,49 +116,9 @@ class _HomePageState extends State<HomePage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Center(child: Text('Mental Healt'),),
-        leading: PopupMenuButton<String>(
-          onSelected: (value) {
-            // Realizar acciones según la selección del menú
-            if(value == 'logout'){
-              FirebaseAuth.instance.signOut();
-              Navigator.popAndPushNamed(context, '/login');
-            }else{
-              Navigator.popAndPushNamed(context, '/$value');
-            }
-
-            print('Opción seleccionada: $value');
-          },
-          itemBuilder: (BuildContext context) {
-            return [
-              PopupMenuItem(
-                value: 'profileShow',
-                child: Text('Perfil'),
-              ),
-              PopupMenuItem(
-                value: 'chat',
-                child: Text('Chat Bot'),
-              ),
-              PopupMenuItem(
-                value: 'listTests',
-                child: Text('Lista de test'),
-              ),
-              PopupMenuItem(
-                value: 'listTechniquels',
-                child: Text('Lista de técnicas'),
-              ),
-              PopupMenuItem(
-                value: 'logout',
-                child: Text('Cerrar Sesión'),
-              ),
-            ];
-          },
-          icon: Icon(Icons.menu), // Ícono de menú
-        ),
-        actions: [
-          IconButton(onPressed: (){Navigator.popAndPushNamed(context, '/profileShow');}, icon: Icon(Icons.account_circle))
-        ],
+        title: Center(child: Text('Mental Health'),),
       ),
+      drawer: SidebarMenu(),
       body: ListView(
         padding: EdgeInsets.all(30),
         children: [
