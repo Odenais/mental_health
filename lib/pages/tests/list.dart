@@ -88,7 +88,7 @@ class PercivedStressScaleDetailsPage extends StatelessWidget {
             Center(
               child: ElevatedButton(
                 onPressed: () {
-                  //Navigator.popAndPushNamed(context, '/percivedStressScale');
+                  Navigator.popAndPushNamed(context, '/percivedStressScale');
                 },
                 child: Text("Iniciar Test"),
               ),
