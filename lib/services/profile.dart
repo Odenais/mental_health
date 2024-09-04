@@ -26,7 +26,7 @@ class Profile {
     }
   }
   
-  Future<void> addFieldToFirestore(String field, String mapField, String string1, String string2) async {
+  Future<void> addHistoricalDataToFirestore(String field, String historicalKey, String dato1, String dato2) async {
     try {
       String correo = initializeEmail();
       var collection = FirebaseFirestore.instance.collection('users'); // Instancia de Firestore
@@ -39,8 +39,12 @@ class Profile {
         // Obtener la fecha y hora actual en formato deseado
         String currentDateTime = DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now());
 
-        // Crear el nuevo array con los datos
-        List<String> newArray = [string1, string2, currentDateTime];
+        // Crear un nuevo histórico con los datos
+        Map<String, dynamic> newHistorical = {
+          'dato1': dato1,
+          'dato2': dato2,
+          'fecha': currentDateTime,
+        };
 
         // Leer el documento actual para obtener el campo existente
         var docSnapshot = await collection.doc(document.id).get();
@@ -49,24 +53,24 @@ class Profile {
         // Obtener el mapa existente o inicializar uno vacío si no existe
         Map<String, dynamic> existingMap = data[field] as Map<String, dynamic>? ?? {};
 
-        // Obtener el array existente bajo la clave especificada o inicializar uno vacío si no existe
-        List<dynamic> existingArrayDynamic = existingMap[mapField] as List<dynamic>? ?? [];
+        // Obtener la lista de históricos existentes bajo la clave especificada o inicializar una lista vacía si no existe
+        List<dynamic> existingHistoriesDynamic = existingMap[historicalKey] as List<dynamic>? ?? [];
 
-        // Convertir el array dinámico a una lista de cadenas si es necesario
-        List<String> existingArray = existingArrayDynamic.map((e) => e.toString()).toList();
+        // Convertir la lista dinámica a una lista de mapas
+        List<Map<String, dynamic>> existingHistories = existingHistoriesDynamic.map((e) => e as Map<String, dynamic>).toList();
 
-        // Agregar el nuevo array al array existente
-        existingArray.addAll(newArray);
+        // Agregar el nuevo histórico a la lista existente
+        existingHistories.add(newHistorical);
 
-        // Actualizar el mapa con el array modificado
-        existingMap[mapField] = existingArray;
+        // Actualizar el mapa con la lista de históricos modificada
+        existingMap[historicalKey] = existingHistories;
 
         // Actualizar el documento con el mapa modificado
         await collection.doc(document.id).update({
-          field: existingMap, // Actualizamos el campo con el mapa que ahora incluye el nuevo array
+          field: existingMap, // Actualizamos el campo con el mapa que ahora incluye el nuevo histórico
         });
 
-        print('Campo añadido exitosamente');
+        print('Datos históricos añadidos exitosamente');
       } else {
         print('No se encontró un usuario con el correo proporcionado');
       }
