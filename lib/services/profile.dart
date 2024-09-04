@@ -25,7 +25,7 @@ class Profile {
       print('Error al crear el perfil: $e');
     }
   }
-
+  
   Future<void> addFieldToFirestore(String field, String mapField, String string1, String string2) async {
     try {
       String correo = initializeEmail();
@@ -50,7 +50,10 @@ class Profile {
         Map<String, dynamic> existingMap = data[field] as Map<String, dynamic>? ?? {};
 
         // Obtener el array existente bajo la clave especificada o inicializar uno vacío si no existe
-        List<String> existingArray = existingMap[mapField] as List<String>? ?? [];
+        List<dynamic> existingArrayDynamic = existingMap[mapField] as List<dynamic>? ?? [];
+
+        // Convertir el array dinámico a una lista de cadenas si es necesario
+        List<String> existingArray = existingArrayDynamic.map((e) => e.toString()).toList();
 
         // Agregar el nuevo array al array existente
         existingArray.addAll(newArray);
