@@ -25,7 +25,7 @@ class Profile {
       print('Error al crear el perfil: $e');
     }
   }
-
+  
   Future<void> addFieldToFirestore(String field, String mapField, String string1, String string2) async {
     try {
       String correo = initializeEmail();
@@ -36,11 +36,11 @@ class Profile {
         // Si existe un documento con el correo proporcionado
         var document = querySnapshot.docs.first; // Primer documento que coincide
 
-        // Obtener la fecha actual en formato deseado
-        String currentDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
+        // Obtener la fecha y hora actual en formato deseado
+        String currentDateTime = DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now());
 
         // Crear el array con los datos
-        List<String> newArray = [string1, string2, currentDate];
+        List<String> newArray = [string1, string2, currentDateTime];
 
         // Leer el documento actual para obtener el campo existente
         var docSnapshot = await collection.doc(document.id).get();
