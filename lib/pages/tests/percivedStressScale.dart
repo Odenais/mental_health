@@ -75,7 +75,7 @@ class _PercivedStressScalePageState extends State<PercivedStressScalePage> {
 
   void _createHistorial(String dato1, String dato2) {
     final Profile _profile = Profile();
-    _profile.addFieldToFirestore('test','historial', dato1, dato2);
+    _profile.addHistoricalDataToFirestore('test','historial', dato1, dato2);
   }
 
   void _previousQuestion() {

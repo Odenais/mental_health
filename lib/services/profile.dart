@@ -25,7 +25,7 @@ class Profile {
       print('Error al crear el perfil: $e');
     }
   }
-  
+
   Future<void> addHistoricalDataToFirestore(String field, String historicalKey, String dato1, String dato2) async {
     try {
       String correo = initializeEmail();
