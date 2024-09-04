@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:mental_health/pages/Techniquels/TechniquelsList.dart';
 import 'package:mental_health/pages/chat/chat.dart';
 import 'package:mental_health/pages/home/home.dart';
 import 'package:mental_health/pages/login/login.dart';
@@ -45,6 +46,8 @@ class MyApp extends StatelessWidget {
         '/profileShow': (context) => ProfileShowPage(),
         '/listTests': (context) => TestListPage(),
         '/percivedStressScale': (context) => PercivedStressScalePage(),
+        '/listTechniquels':(context) => TechniquelsListPage(),
+        '/breathing_4_7_8':(context) => Breathing_4_7_8(),
       },
     );
   }

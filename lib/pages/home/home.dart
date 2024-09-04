@@ -142,6 +142,10 @@ class _HomePageState extends State<HomePage> {
                 child: Text('Lista de test'),
               ),
               PopupMenuItem(
+                value: 'listTechniquels',
+                child: Text('Lista de técnicas'),
+              ),
+              PopupMenuItem(
                 value: 'logout',
                 child: Text('Cerrar Sesión'),
               ),
