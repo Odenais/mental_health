@@ -81,7 +81,8 @@ class _ChatbotPageState extends State<ChatbotPage> {
               break;
             case 'notListening':
               showSnackBar('Reconocimiento de voz no está escuchando.');
-              error(true);
+              reset(true);
+              print("FIN DE EJECUCION");
               break;
             case 'done':
               showSnackBar('Reconocimiento de voz ha terminado.');
@@ -401,34 +402,6 @@ class _ChatbotPageState extends State<ChatbotPage> {
                     ),
                   ),
                 ],
-              ),
-              Positioned(
-                bottom: 80.0,
-                left: MediaQuery.of(context).size.width / 2 - 40,
-                child: GestureDetector(
-                  onTap: startListening,
-                  // Ahora alterna entre escuchar y detener
-                  child: AvatarGlow(
-                    startDelay: Duration(milliseconds: 1000),
-                    glowColor: Colors.blueAccent.withOpacity(0.3),
-                    animate: isListening,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        gradient: LinearGradient(
-                          colors: [Colors.blueAccent, Colors.lightBlueAccent],
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                        ),
-                      ),
-                      child: Icon(
-                        isListening ? Icons.mic : Icons.mic_none,
-                        size: 48.0,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                ),
               ),
             ],
           ),
