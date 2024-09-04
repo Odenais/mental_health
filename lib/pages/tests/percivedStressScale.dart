@@ -47,13 +47,16 @@ class _PercivedStressScalePageState extends State<PercivedStressScalePage> {
   void _nextQuestion() {
     setState(() {
       if (_currentQuestionIndex == 13) { // Si es la última pregunta (índice 13)
+        // Calcular el puntaje total
+        int score = _calculateScore();
+
         // Ejecutar una acción especial
-        _createHistorial();
+        _createHistorial('Percived Stress Scale', score.toString());
 
         // Después, mostrar la página de completado
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => CompletedPage(score: _calculateScore())),
+          MaterialPageRoute(builder: (context) => CompletedPage(score: score)),
         );
       } else if (_currentQuestionIndex < _questions.length - 1) {
         _currentQuestionIndex++;
@@ -61,10 +64,9 @@ class _PercivedStressScalePageState extends State<PercivedStressScalePage> {
     });
   }
 
-  void _createHistorial() {
+  void _createHistorial(String dato1, String dato2) {
     final Profile _profile = Profile();
-    _profile.addFieldToFirestore('nuevoCampo', 'Dato1', 'Dato2');
-
+    _profile.addFieldToFirestore('Historial', dato1, dato2);
   }
 
   void _previousQuestion() {

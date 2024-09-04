@@ -75,7 +75,8 @@ class _HomePageState extends State<HomePage> {
 
     // Selecciona un saludo aleatorio
     final random = Random();
-    String greeting = greetings[random.nextInt(greetings.length)];
+    String greeting = '';
+    //String greeting = greetings[random.nextInt(greetings.length)];
 
     // Verifica si el apodo no es nulo antes de hablar
     if (_apodo != null) {
