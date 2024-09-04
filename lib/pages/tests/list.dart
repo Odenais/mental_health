@@ -88,7 +88,7 @@ class PercivedStressScaleDetailsPage extends StatelessWidget {
             Center(
               child: ElevatedButton(
                 onPressed: () {
-                  Navigator.popAndPushNamed(context, '/percivedStressScale');
+                  //Navigator.popAndPushNamed(context, '/percivedStressScale');
                 },
                 child: Text("Iniciar Test"),
               ),
@@ -135,7 +135,7 @@ class BurnoutInventoryDetailsPage extends StatelessWidget {
             Center(
               child: ElevatedButton(
                 onPressed: () {
-                  Navigator.popAndPushNamed(context, '/burnoutInventory');
+                  //Navigator.popAndPushNamed(context, '/burnoutInventory');
                 },
                 child: Text("Iniciar Test"),
               ),
@@ -190,7 +190,7 @@ class AnxietyTestDetailsPage extends StatelessWidget {
             Center(
               child: ElevatedButton(
                 onPressed: () {
-                  Navigator.popAndPushNamed(context, '/anxietyTest');
+                  //Navigator.popAndPushNamed(context, '/anxietyTest');
                 },
                 child: Text("Iniciar Test"),
               ),
