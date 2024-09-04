@@ -26,7 +26,7 @@ class Profile {
     }
   }
 
-  Future<void> addFieldToFirestore(String field, String string1, String string2) async {
+  Future<void> addFieldToFirestore(String field, String mapField, String string1, String string2) async {
     try {
       String correo = initializeEmail();
       var collection = FirebaseFirestore.instance.collection('users'); // Instancia de Firestore
@@ -42,9 +42,19 @@ class Profile {
         // Crear el array con los datos
         List<String> newArray = [string1, string2, currentDate];
 
-        // Actualizar el documento con el nuevo campo
+        // Leer el documento actual para obtener el campo existente
+        var docSnapshot = await collection.doc(document.id).get();
+        Map<String, dynamic> data = docSnapshot.data() as Map<String, dynamic>? ?? {};
+
+        // Obtener el mapa existente o inicializar uno vacío si no existe
+        Map<String, dynamic> existingMap = data[field] as Map<String, dynamic>? ?? {};
+
+        // Agregar el nuevo array al mapa
+        existingMap[mapField] = newArray; // Aquí 'mapField' es la clave dentro del mapa
+
+        // Actualizar el documento con el mapa modificado
         await collection.doc(document.id).update({
-          field: newArray, // Aquí 'field' es el nombre del campo y 'newArray' es el valor a añadir
+          field: existingMap, // Actualizamos el campo con el mapa que ahora incluye el nuevo array
         });
 
         print('Campo añadido exitosamente');
@@ -55,6 +65,7 @@ class Profile {
       print('Error al actualizar el campo $field: $e');
     }
   }
+
 
   /*
   Future<String?> getApodoByCorreo(String correo) async {

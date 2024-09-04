@@ -3,12 +3,14 @@ import 'package:mental_health/services/profile.dart';
 
 class PercivedStressScalePage extends StatefulWidget {
   @override
-  _PercivedStressScalePageState createState() => _PercivedStressScalePageState();
+  _PercivedStressScalePageState createState() =>
+      _PercivedStressScalePageState();
 }
 
 class _PercivedStressScalePageState extends State<PercivedStressScalePage> {
   int _currentQuestionIndex = 0;
-  List<int> _answers = List<int>.filled(14, -1); // Lista para almacenar las respuestas
+  List<int> _answers =
+      List<int>.filled(14, -1); // Lista para almacenar las respuestas
 
   final List<String> _questions = [
     "En el último mes, ¿con qué frecuencia ha estado afectado por algo que ha ocurrido inesperadamente?",
@@ -27,7 +29,13 @@ class _PercivedStressScalePageState extends State<PercivedStressScalePage> {
     "En el último mes, ¿con qué frecuencia ha sentido que las dificultades se acumulan tanto que no puede superarlas?",
   ];
 
-  final List<String> _options = ["Nunca", "Casi nunca", "De vez en cuando", "A menudo", "Muy a menudo"];
+  final List<String> _options = [
+    "Nunca",
+    "Casi nunca",
+    "De vez en cuando",
+    "A menudo",
+    "Muy a menudo"
+  ];
 
   final Map<String, int> _optionValues = {
     "Nunca": 0,
@@ -46,7 +54,8 @@ class _PercivedStressScalePageState extends State<PercivedStressScalePage> {
 
   void _nextQuestion() {
     setState(() {
-      if (_currentQuestionIndex == 13) { // Si es la última pregunta (índice 13)
+      if (_currentQuestionIndex == 13) {
+        // Si es la última pregunta (índice 13)
         // Calcular el puntaje total
         int score = _calculateScore();
 
@@ -66,7 +75,7 @@ class _PercivedStressScalePageState extends State<PercivedStressScalePage> {
 
   void _createHistorial(String dato1, String dato2) {
     final Profile _profile = Profile();
-    _profile.addFieldToFirestore('Historial', dato1, dato2);
+    _profile.addFieldToFirestore('test','historial', dato1, dato2);
   }
 
   void _previousQuestion() {
@@ -90,7 +99,8 @@ class _PercivedStressScalePageState extends State<PercivedStressScalePage> {
           IconButton(
             icon: Icon(Icons.home),
             onPressed: () {
-              Navigator.pushNamed(context, '/home'); // Navegar a la página de inicio
+              Navigator.pushNamed(
+                  context, '/home'); // Navegar a la página de inicio
             },
           ),
         ],
@@ -105,7 +115,8 @@ class _PercivedStressScalePageState extends State<PercivedStressScalePage> {
                 children: [
                   Text(
                     "Pregunta ${_currentQuestionIndex + 1} de ${_questions.length}",
-                    style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
+                    style:
+                        TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
                   ),
                   SizedBox(height: 10),
                   Text(
@@ -115,7 +126,8 @@ class _PercivedStressScalePageState extends State<PercivedStressScalePage> {
                   SizedBox(height: 20),
                   for (int i = 0; i < _options.length; i++)
                     ElevatedButton(
-                      onPressed: () => _selectOption(_optionValues[_options[i]]!),
+                      onPressed: () =>
+                          _selectOption(_optionValues[_options[i]]!),
                       child: Text(_options[i]),
                     ),
                 ],
@@ -162,9 +174,9 @@ class CompletedPage extends StatelessWidget {
             SizedBox(height: 20),
             Text(
               "• 0-13: Bajo nivel de estrés\n"
-                  "• 14-26: Nivel moderado de estrés\n"
-                  "• 27-40: Alto nivel de estrés\n"
-                  "• 41-56: Estrés severo",
+              "• 14-26: Nivel moderado de estrés\n"
+              "• 27-40: Alto nivel de estrés\n"
+              "• 41-56: Estrés severo",
               style: TextStyle(fontSize: 16.0, color: Colors.black87),
             ),
             Text(
@@ -181,7 +193,8 @@ class CompletedPage extends StatelessWidget {
             SizedBox(height: 10),
             ElevatedButton(
               onPressed: () {
-                Navigator.pushNamed(context, '/home'); // Navegar a la página de inicio
+                Navigator.pushNamed(
+                    context, '/home'); // Navegar a la página de inicio
               },
               child: Text("Ir a /home"),
             ),
