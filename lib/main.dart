@@ -7,6 +7,8 @@ import 'package:mental_health/pages/login/login.dart';
 import 'package:mental_health/pages/profile/show.dart';
 import 'package:mental_health/pages/signup/signup.dart';
 import 'package:mental_health/pages/signup/signup_profile.dart';
+import 'package:mental_health/pages/tests/list.dart';
+import 'package:mental_health/pages/tests/percivedStressScale.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -40,7 +42,9 @@ class MyApp extends StatelessWidget {
         '/home': (context) => HomePage(),
         '/login': (context) => LoginPage(),
         '/chat': (context) => ChatbotPage(),
-        '/profileShow': (context) => ProfilePageShow(),
+        '/profileShow': (context) => ProfileShowPage(),
+        '/listTests': (context) => TestListPage(),
+        '/percivedStressScale': (context) => PercivedStressScalePage(),
       },
     );
   }

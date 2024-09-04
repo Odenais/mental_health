@@ -4,12 +4,12 @@ import 'package:mental_health/services/profile.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-class ProfilePageShow extends StatefulWidget {
+class ProfileShowPage extends StatefulWidget {
   @override
-  _ProfilePageShowState createState() => _ProfilePageShowState();
+  _ProfileShowPageState createState() => _ProfileShowPageState();
 }
 
-class _ProfilePageShowState extends State<ProfilePageShow> {
+class _ProfileShowPageState extends State<ProfileShowPage> {
   final Profile _profile = Profile();
   final _formKey = GlobalKey<FormState>();
 
