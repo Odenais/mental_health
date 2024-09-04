@@ -39,7 +39,7 @@ class Profile {
         // Obtener la fecha y hora actual en formato deseado
         String currentDateTime = DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now());
 
-        // Crear el array con los datos
+        // Crear el nuevo array con los datos
         List<String> newArray = [string1, string2, currentDateTime];
 
         // Leer el documento actual para obtener el campo existente
@@ -49,8 +49,14 @@ class Profile {
         // Obtener el mapa existente o inicializar uno vacío si no existe
         Map<String, dynamic> existingMap = data[field] as Map<String, dynamic>? ?? {};
 
-        // Agregar el nuevo array al mapa
-        existingMap[mapField] = newArray; // Aquí 'mapField' es la clave dentro del mapa
+        // Obtener el array existente o inicializar uno vacío si no existe
+        List<String> existingArray = existingMap[mapField] as List<String>? ?? [];
+
+        // Agregar el nuevo array al array existente
+        existingArray.addAll(newArray);
+
+        // Actualizar el mapa con el array modificado
+        existingMap[mapField] = existingArray;
 
         // Actualizar el documento con el mapa modificado
         await collection.doc(document.id).update({
@@ -65,7 +71,6 @@ class Profile {
       print('Error al actualizar el campo $field: $e');
     }
   }
-
 
   /*
   Future<String?> getApodoByCorreo(String correo) async {
