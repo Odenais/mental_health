@@ -51,10 +51,10 @@ class _HomePageState extends State<HomePage> {
     ];
 
     List<String> lateNightGreetings = [
-      "Hola $_apodo, sé que es tarde, pero espero que encuentres un poco de calma esta noche. 🌜",
-      "Buenas noches $_apodo, espero que encuentres paz y tranquilidad para descansar bien. 🌙",
-      "Hola $_apodo, aunque sea tarde, recuerda que siempre hay un nuevo amanecer por venir. 🌌",
-      "Buenas noches $_apodo, espero que encuentres serenidad y tranquilidad para dormir mejor. 💤",
+      "Hola $_apodo, sé que es tarde, pero espero que encuentres un poco de calma esta noche.",
+      "Buenas noches $_apodo, espero que encuentres paz y tranquilidad para descansar bien.",
+      "Hola $_apodo, aunque sea tarde, recuerda que siempre hay un nuevo amanecer por venir.",
+      "Buenas noches $_apodo, espero que encuentres serenidad y tranquilidad para dormir mejor.",
     ];
 
     // Obtén la hora actual
@@ -137,6 +137,10 @@ class _HomePageState extends State<HomePage> {
                 child: Text('Chat Bot'),
               ),
               PopupMenuItem(
+                value: 'listTests',
+                child: Text('Lista de test'),
+              ),
+              PopupMenuItem(
                 value: 'logout',
                 child: Text('Cerrar Sesión'),
               ),
@@ -157,7 +161,7 @@ class _HomePageState extends State<HomePage> {
             ),
             child: Center(
               child: Text(
-                'Bienvenido, ${user?.email ?? 'Usuario'}',
+                'Bienvenido, $_apodo',
                 style: TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
@@ -169,7 +173,7 @@ class _HomePageState extends State<HomePage> {
           ),
 
           SizedBox(height: 45,),
-          
+
           Column(
 
             children: [
