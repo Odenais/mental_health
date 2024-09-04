@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mental_health/services/profile.dart';
 
 class PercivedStressScalePage extends StatefulWidget {
   @override
@@ -45,15 +46,25 @@ class _PercivedStressScalePageState extends State<PercivedStressScalePage> {
 
   void _nextQuestion() {
     setState(() {
-      if (_currentQuestionIndex < _questions.length - 1) {
-        _currentQuestionIndex++;
-      } else {
+      if (_currentQuestionIndex == 13) { // Si es la última pregunta (índice 13)
+        // Ejecutar una acción especial
+        _createHistorial();
+
+        // Después, mostrar la página de completado
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => CompletedPage(score: _calculateScore())),
         );
+      } else if (_currentQuestionIndex < _questions.length - 1) {
+        _currentQuestionIndex++;
       }
     });
+  }
+
+  void _createHistorial() {
+    final Profile _profile = Profile();
+    _profile.addFieldToFirestore('nuevoCampo', 'Dato1', 'Dato2');
+
   }
 
   void _previousQuestion() {

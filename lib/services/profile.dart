@@ -1,5 +1,8 @@
+import 'package:flutter/material.dart';
 import "package:cloud_firestore/cloud_firestore.dart";
 import "package:firebase_auth/firebase_auth.dart";
+import "package:flutter/foundation.dart";
+import "package:intl/intl.dart";
 
 class Profile {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -20,6 +23,36 @@ class Profile {
       print('Usuario creado correctamente');
     } catch (e) {
       print('Error al crear el perfil: $e');
+    }
+  }
+
+  Future<void> addFieldToFirestore(String field, String string1, String string2) async {
+    try {
+      String correo = initializeEmail();
+      var collection = FirebaseFirestore.instance.collection('users'); // Instancia de Firestore
+      var querySnapshot = await collection.where('Correo', isEqualTo: correo).get();
+
+      if (querySnapshot.docs.isNotEmpty) {
+        // Si existe un documento con el correo proporcionado
+        var document = querySnapshot.docs.first; // Primer documento que coincide
+
+        // Obtener la fecha actual en formato deseado
+        String currentDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
+
+        // Crear el array con los datos
+        List<String> newArray = [string1, string2, currentDate];
+
+        // Actualizar el documento con el nuevo campo
+        await collection.doc(document.id).update({
+          field: newArray, // Aquí 'field' es el nombre del campo y 'newArray' es el valor a añadir
+        });
+
+        print('Campo añadido exitosamente');
+      } else {
+        print('No se encontró un usuario con el correo proporcionado');
+      }
+    } catch (e) {
+      print('Error al actualizar el campo $field: $e');
     }
   }
 
