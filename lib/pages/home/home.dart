@@ -16,8 +16,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-
-
   final Profile _profile = Profile();
   String? _apodo;
 
@@ -90,7 +88,8 @@ class _HomePageState extends State<HomePage> {
       await _flutterTts.speak(greeting);
     } else {
       // Si el apodo es nulo, usa un saludo genérico
-      await _flutterTts.speak(greeting.replaceAll("$_apodo", "a nuestra aplicación"));
+      await _flutterTts
+          .speak(greeting.replaceAll("$_apodo", "a nuestra aplicación"));
     }
   }
 
@@ -117,20 +116,20 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final User? user = FirebaseAuth.instance.currentUser; // Obtener usuario autenticado
+    final User? user =
+        FirebaseAuth.instance.currentUser; // Obtener usuario autenticado
 
     return Scaffold(
       appBar: AppBar(
-        title: Center(child: Text('Mental Health'),),
+        backgroundColor: Color(0xFF3F4660),
+        foregroundColor: Colors.white,
       ),
       drawer: SidebarMenu(),
       body: ListView(
         padding: EdgeInsets.all(30),
         children: [
           Container(
-            decoration: BoxDecoration(
-
-            ),
+            decoration: BoxDecoration(),
             child: Center(
               child: Text(
                 'Bienvenido, $_apodo',
@@ -143,35 +142,29 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
           ),
-
-          SizedBox(height: 45,),
-
+          SizedBox(
+            height: 45,
+          ),
           Column(
-
             children: [
               Container(
-
-                height: MediaQuery.of(context).size.height-600,
-                decoration: BoxDecoration(
-                ),
+                height: MediaQuery.of(context).size.height - 600,
+                decoration: BoxDecoration(),
                 child: ElevatedButton(
-
-                    onPressed: (){},
+                    onPressed: () {},
                     child: Icon(
                       Icons.mic,
-                      size: MediaQuery.of(context).size.width-100,
-                    )
-                ),
+                      size: MediaQuery.of(context).size.width - 100,
+                    )),
               ),
             ],
           ),
-
-
-          SizedBox(height: 45,),
-
+          SizedBox(
+            height: 45,
+          ),
           Container(
-            width: 300, // Ancho del contenedor
-            height: 300, // Alto del contenedor
+            width: 200, // Ancho del contenedor
+            height: 150, // Alto del contenedor
             padding: EdgeInsets.all(8), // Espacio alrededor del contenido
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(12),
@@ -184,66 +177,54 @@ class _HomePageState extends State<HomePage> {
                       Expanded(
                         child: GestureDetector(
                           onTap: () {
-                            print('Test presionado'); // Acción cuando se presiona
+                            print(
+                                'Test presionado'); // Acción cuando se presiona
                           },
                           child: Container(
                             margin: EdgeInsets.all(4),
                             decoration: BoxDecoration(
-                              color: Colors.deepPurple[200],
+                              border: Border.all(
+                                color: Color.fromARGB(
+                                    255, 184, 169, 224), // Color del contorno
+                                width: 3.0, // Grosor del contorno
+                              ),
+                              color: Color.fromARGB(255, 97, 85, 135),
                               borderRadius: BorderRadius.circular(8),
                             ),
-                            child: Center(child: Text('Test')),
+                            child: Center(
+                                child: Text(
+                              'Test',
+                              style: TextStyle(
+                                color: Colors.white,
+                              ),
+                            )),
                           ),
                         ),
                       ),
                       Expanded(
                         child: GestureDetector(
                           onTap: () {
-                            print('Opción 2 presionada'); // Acción cuando se presiona
+                            print(
+                                'Opción 2 presionada'); // Acción cuando se presiona
                           },
                           child: Container(
                             margin: EdgeInsets.all(4),
                             decoration: BoxDecoration(
-                              color: Colors.deepPurple[200],
+                              color: Color.fromARGB(255, 97, 85, 135),
+                              border: Border.all(
+                                color: Color.fromARGB(
+                                    255, 184, 169, 224), // Color del contorno
+                                width: 3.0, // Grosor del contorno
+                              ),
                               borderRadius: BorderRadius.circular(8),
                             ),
-                            child: Center(child: Text('Opción 2')),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Expanded(
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: GestureDetector(
-                          onTap: () {
-                            print('Opción 3 presionada'); // Acción cuando se presiona
-                          },
-                          child: Container(
-                            margin: EdgeInsets.all(4),
-                            decoration: BoxDecoration(
-                              color: Colors.deepPurple[200],
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            child: Center(child: Text('Opción 3')),
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        child: GestureDetector(
-                          onTap: () {
-                            print('Opción 4 presionada'); // Acción cuando se presiona
-                          },
-                          child: Container(
-                            margin: EdgeInsets.all(4),
-                            decoration: BoxDecoration(
-                              color: Colors.deepPurple[200],
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            child: Center(child: Text('Opción 4')),
+                            child: Center(
+                                child: Text(
+                              'Técnicas de ayuda',
+                              style: TextStyle(
+                                color: Colors.white,
+                              ),
+                            )),
                           ),
                         ),
                       ),
@@ -253,7 +234,6 @@ class _HomePageState extends State<HomePage> {
               ],
             ),
           )
-
         ],
       ),
       /*Padding(
