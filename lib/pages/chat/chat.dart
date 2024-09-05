@@ -1,7 +1,10 @@
+import 'dart:math';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_generative_ai/google_generative_ai.dart';
 import 'package:mental_health/config.dart';
+import 'package:mental_health/pages/chat/video.dart';
 import 'package:speech_to_text/speech_to_text.dart' as stt;
 import 'package:avatar_glow/avatar_glow.dart';
 import 'package:flutter_tts/flutter_tts.dart';
@@ -32,9 +35,13 @@ class _ChatbotPageState extends State<ChatbotPage> {
   List<Map<String, String>> messages = [];
 
   TtsState ttsState = TtsState.stopped;
+
   bool get isPlaying => ttsState == TtsState.playing;
+
   bool get isStopped => ttsState == TtsState.stopped;
+
   bool get isPaused => ttsState == TtsState.paused;
+
   bool get isContinued => ttsState == TtsState.continued;
 
   @override
@@ -188,31 +195,55 @@ class _ChatbotPageState extends State<ChatbotPage> {
       String botResponse = response.text ?? 'No response text.';
 
       // Agregar el mensaje del usuario y del bot al chat
+      List<String> phrases = [
+        'pon música',
+        'pon algo de música',
+        'recomiéndame música',
+        'pon musica',
+        'pon algo de musica',
+        'recomiéndame musica',
+        'recomiendame musica',
+        'recomiendame música',
+      ];
 
-      addMessage('Bot', botResponse);
+      String? lastMessage = messages.isNotEmpty ? messages.last['text'] : null;
+      bool containsPhrase = false;
+      for (String phrase in phrases) {
+        if (messages.isNotEmpty &&
+            lastMessage!.toLowerCase().contains(phrase)) {
+          containsPhrase = true;
+          break; // Sale del bucle si se encuentra una coincidencia
+        }
+      }
+
+      if (containsPhrase) {
+        addMessage("Music", getRandomElement(obtenerListaAleatoria()));
+      } else {
+        addMessage('Bot', botResponse);
+        await _speakText(botResponse);
+      }
 
       // Verifica si el motor de texto a voz ya está hablando
       isChatting(false);
       isSpeaking(true);
       reset(true);
-
       // Llamar al método para que lea el texto del bot
-      await _speakText(botResponse);
+
     } catch (e) {
       addMessage(
           'User', query); // Mostrar la consulta completa en caso de error
       addMessage('Bot', 'Error: ${e.toString()}');
     } finally {
-      isSpeaking(false); //Aqui tiene que estar en falso y hacerlo bucle hasta que termine de hablar. solo la primera vez, despues ni los puntos
+      isSpeaking(
+          false); //Aqui tiene que estar en falso y hacerlo bucle hasta que termine de hablar. solo la primera vez, despues ni los puntos
       //Si le pongo false si salen los puntos en los demas
       isSpeaking(true);
-      
+
       textController.clear();
       scrollToEnd();
       setState(() {
         loading = false;
       });
-
     }
   }
 
@@ -232,6 +263,27 @@ class _ChatbotPageState extends State<ChatbotPage> {
 
   Widget buildMessage(Map<String, String> message) {
     final isUser = message['role'] == 'User';
+
+    // Verificar si el rol es 'Music', lo que indica que es un video
+    final isVideo = message['role'] == 'Music';
+
+    // Si es un video, muestra el YoutubePlayerComponent
+    if (isVideo) {
+      return Align(
+        alignment: isUser ? Alignment.centerRight : Alignment.centerLeft,
+        child: Container(
+          margin: EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
+          padding: EdgeInsets.all(8.0),
+          decoration: BoxDecoration(
+            color: Colors.grey[300],
+            borderRadius: BorderRadius.circular(12.0),
+          ),
+          child: AudioPlayerComponent(query: message['text']!),
+        ),
+      );
+    }
+    scrollToEnd();
+    // Si es un mensaje de texto, renderiza como antes
     return Align(
       alignment: isUser ? Alignment.centerRight : Alignment.centerLeft,
       child: Container(
@@ -314,7 +366,6 @@ class _ChatbotPageState extends State<ChatbotPage> {
   Future<void> _stopSpeech() async {
     var result = await _flutterTts.stop();
     if (result == 1) setState(() => ttsState = TtsState.stopped);
-
   }
 
   Future<String?> getApodo() async {
@@ -343,176 +394,266 @@ class _ChatbotPageState extends State<ChatbotPage> {
   late rive.StateMachineController? stateMachineController,
       stateMachineControllerBg;
 
-  void isSpeaking(value){
-    isSpeak?.change(value);
+  void isSpeaking(value) {
+    if (stateMachineController != null) {
+      isSpeak?.change(value);
+    }
   }
 
   void isConnected(bool value) {
-    isNoInternet?.change(value);
+    if (stateMachineController != null) {
+      isNoInternet?.change(value);
+    }
   }
 
   void error(bool value) {
-    isError?.change(value);
+    if (stateMachineController != null) {
+      isError?.change(value);
+    }
   }
 
   void isChatting(bool value) {
-    isChat?.change(value);
+    if (stateMachineController != null) {
+      isChat?.change(value);
+    }
   }
 
   void reset(bool value) {
-    isReset?.change(value);
+    if (stateMachineController != null) {
+      isReset?.change(value);
+    }
   }
 
   var percent = 0;
 
   void isDownloading(value) {
-    if (value) {
-      percent += 10;
-      download?.change(percent.toDouble());
+    if (stateMachineController != null) {
+      if (value) {
+        percent += 10;
+        download?.change(percent.toDouble());
+      }
     }
+  }
+
+  List<List<String>> songs = [
+    // Energía Alegre Positiva
+    [
+      "September – Earth, Wind & Fire",
+      "Walking on Sunshine – Katrina and the Waves",
+      "Good Vibrations – The Beach Boys",
+      "Dancing in the Moonlight – Toploader",
+      "I Feel Good – James Brown"
+    ],
+
+    // Optimismo y Felicidad Ligera
+    [
+      "Here Comes the Sun – The Beatles",
+      "Happy – Pharrell Williams",
+      "Lovely Day – Bill Withers",
+      "You Make My Dreams – Hall & Oates",
+      "I'm Yours – Jason Mraz"
+    ],
+
+    // Aventura, Sentimientos y Libertad
+    [
+      "Shut Up and Dance – WALK THE MOON",
+      "On Top of the World – Imagine Dragons",
+      "Send Me on My Way – Rusted Root",
+      "Take on Me – a-ha",
+      "Don’t Stop Me Now – Queen"
+    ],
+
+    // Motivación y Autoestima
+    [
+      "Uptown Funk – Mark Ronson ft. Bruno Mars",
+      "I Will Survive – Gloria Gaynor",
+      "I Gotta Feeling – The Black Eyed Peas",
+      "Firework – Katy Perry",
+      "Stronger – Kanye West"
+    ],
+
+    // Relajación y Buen Humor
+    [
+      "Three Little Birds – Bob Marley",
+      "Riptide – Vance Joy",
+      "Sunday Morning – Maroon 5",
+      "Banana Pancakes – Jack Johnson",
+      "Put Your Records On – Corinne Bailey Rae"
+    ],
+  ];
+
+  List<String> obtenerListaAleatoria() {
+    final random = Random();
+    int index = random.nextInt(songs.length);
+    return songs[index];
+  }
+
+  String getRandomElement(List<String> list) {
+    final random = Random();
+    int randomIndex = random.nextInt(list.length);
+    return list[randomIndex];
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        extendBodyBehindAppBar: true,
-        appBar: AppBar(
-          foregroundColor: Colors.white,
-          centerTitle: true,
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-          //automaticallyImplyLeading: false,
-        ),
-        drawer: SidebarMenu(),
-        body: Container(
-          decoration: BoxDecoration(color: Colors.black),
-          child: Stack(
-            children: [
-              Positioned.fill(
-                  child: SizedBox.expand(
-                      child: rive.RiveAnimation.asset(
-                          'assets/background_effect.riv',
-                          fit: BoxFit.cover,
-                          stateMachines: const ["State Machine 1"],
-                          onInit: (artBoard) {
-                stateMachineControllerBg =
-                    rive.StateMachineController.fromArtboard(
-                  artBoard,
-                  "State Machine 1",
-                );
-                if (stateMachineController == null) return;
-                artBoard.addController(stateMachineController!);
-              }))),
-              Column(
-                children: [
-                  Padding(padding: EdgeInsets.only(top: 90)),
-                  Expanded(
-                      child: Container(
-                          width: MediaQuery.of(context).size.width,
-                          child: GestureDetector(
-                            onTap: startListening,
-                            child: rive.RiveAnimation.asset(
-                              'assets/robocat.riv',
-                              stateMachines: const ["State Machine"],
-                              onInit: (artBoard) {
-                                stateMachineController =
-                                    rive.StateMachineController.fromArtboard(
-                                  artBoard,
-                                  "State Machine", // it must be the same as the Rive state machine name
-                                );
-                                if (stateMachineController == null) return;
-                                artBoard.addController(stateMachineController!);
-
-                                isNoInternet = stateMachineController
-                                    ?.findInput("No Internet");
-                                isError =
-                                    stateMachineController?.findInput("Error");
-                                isChat =
-                                    stateMachineController?.findInput("Chat");
-                                isReset =
-                                    stateMachineController?.findInput("Reset");
-                                download =
-                                    stateMachineController?.findSMI("Download");
-                                //cual es la diferencia? smi - input
-                                isSpeak = stateMachineController?.findInput("Speak");
-                              },
-                            ),
-                          ))),
-                  Expanded(
-                    child: ListView.builder(
-                      controller: scrollController,
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
-                      itemCount: messages.length,
-                      itemBuilder: (context, index) {
-                        return buildMessage(messages[index]);
-                      },
-                    ),
-                  ),
-                  //if (loading)
-                  // Padding(
-                  //   padding: const EdgeInsets.all(8.0),
-                  //   child: Center(child: CircularProgressIndicator()),
-                  // ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 8.0, vertical: 16.0),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: TextField(
-                            style: TextStyle(color: Colors.white),
-                            controller: textController,
-                            decoration: InputDecoration(
-                              enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(15.0),
-                                borderSide: BorderSide(color: Colors.white),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(15.0),
-                                borderSide: BorderSide(
-                                    color: Color.fromARGB(255, 170, 149, 208)),
-                              ),
-                              hintText: 'Escribe un mensaje',
-                              hintStyle: TextStyle(color: Colors.white),
-                            ),
-                            maxLines: null,
-                            onSubmitted: handleSubmitted,
-                            keyboardType: TextInputType.text,
-                            textInputAction: TextInputAction.send,
-                            cursorColor: Colors.white,
-                          ),
-                        ),
-                        SizedBox(width: 8.0),
-                        CircleAvatar(
-                          radius: 25,
-                          backgroundColor: Colors.white,
-                          child: IconButton(
-                              icon: Icon(Icons.send),
-                              onPressed: () {
-                                handleSubmitted(textController.text);
-                                isChatting(true);
-                                isSpeaking(true);
-                              },
-                              color: Color.fromARGB(255, 97, 85, 133)),
-                        ),
-
-                        CircleAvatar(
-                          radius: 25,
-                          backgroundColor: Colors.redAccent,
-                          child: IconButton(
-                            icon: Icon(Icons.stop),
-                            onPressed: _stopSpeech,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
+      extendBodyBehindAppBar: true,
+      appBar: AppBar(
+        actions: [
+          Padding(
+            padding: EdgeInsets.all(5),
+            child: CircleAvatar(
+              radius: 25,
+              backgroundColor: Color.fromARGB(255, 125, 209, 193),
+              child: IconButton(
+                icon: Icon(Icons.music_note),
+                onPressed: () {
+                  addMessage(
+                      "Music", getRandomElement(obtenerListaAleatoria()));
+                },
+                color: Colors.white,
               ),
-            ],
-          ),
-        ));
+            ),
+          )
+        ],
+        foregroundColor: Colors.white,
+        centerTitle: true,
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+      ),
+      drawer: SidebarMenu(),
+      body: Container(
+        decoration: BoxDecoration(color: Colors.black),
+        child: Stack(
+          children: [
+            Positioned.fill(
+              child: SizedBox.expand(
+                child: rive.RiveAnimation.asset(
+                  'assets/background_effect.riv',
+                  fit: BoxFit.cover,
+                  stateMachines: const ["State Machine 1"],
+                  onInit: (artBoard) {
+                    stateMachineControllerBg =
+                        rive.StateMachineController.fromArtboard(
+                      artBoard,
+                      "State Machine 1",
+                    );
+                    if (stateMachineControllerBg != null) {
+                      artBoard.addController(stateMachineControllerBg!);
+                    }
+                  },
+                ),
+              ),
+            ),
+            Column(
+              children: [
+                Padding(padding: EdgeInsets.only(top: 90)),
+                Expanded(
+                  child: Container(
+                    width: MediaQuery.of(context).size.width,
+                    child: GestureDetector(
+                      onTap: startListening,
+                      child: rive.RiveAnimation.asset(
+                        'assets/robocat.riv',
+                        stateMachines: const ["State Machine"],
+                        onInit: (artBoard) {
+                          stateMachineController =
+                              rive.StateMachineController.fromArtboard(
+                            artBoard,
+                            "State Machine",
+                          );
+                          if (stateMachineController != null) {
+                            artBoard.addController(stateMachineController!);
+
+                            isNoInternet = stateMachineController
+                                ?.findInput("No Internet");
+                            isError =
+                                stateMachineController?.findInput("Error");
+                            isChat = stateMachineController?.findInput("Chat");
+                            isReset =
+                                stateMachineController?.findInput("Reset");
+                            download =
+                                stateMachineController?.findSMI("Download");
+                            isSpeak =
+                                stateMachineController?.findInput("Speak");
+                          }
+                        },
+                      ),
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: ListView.builder(
+                    controller: scrollController,
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
+                    itemCount: messages.length,
+                    itemBuilder: (context, index) {
+                      return buildMessage(messages[index]);
+                    },
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 8.0, vertical: 16.0),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: TextField(
+                          style: TextStyle(color: Colors.white),
+                          controller: textController,
+                          decoration: InputDecoration(
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(15.0),
+                              borderSide: BorderSide(color: Colors.white),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(15.0),
+                              borderSide: BorderSide(
+                                  color: Color.fromARGB(255, 170, 149, 208)),
+                            ),
+                            hintText: 'Escribe un mensaje',
+                            hintStyle: TextStyle(color: Colors.white),
+                          ),
+                          maxLines: null,
+                          onSubmitted: handleSubmitted,
+                          keyboardType: TextInputType.text,
+                          textInputAction: TextInputAction.send,
+                          cursorColor: Colors.white,
+                        ),
+                      ),
+                      SizedBox(width: 8.0),
+                      CircleAvatar(
+                        radius: 25,
+                        backgroundColor: Colors.white,
+                        child: IconButton(
+                          icon: Icon(Icons.send),
+                          onPressed: () {
+                            handleSubmitted(textController.text);
+                            isChatting(true);
+                            isSpeaking(true);
+                          },
+                          color: Color.fromARGB(255, 97, 85, 133),
+                        ),
+                      ),
+                      SizedBox(width: 8.0),
+                      CircleAvatar(
+                        radius: 25,
+                        backgroundColor: Colors.redAccent,
+                        child: IconButton(
+                          icon: Icon(Icons.stop),
+                          onPressed: _stopSpeech,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
