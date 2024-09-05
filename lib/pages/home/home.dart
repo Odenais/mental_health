@@ -116,7 +116,54 @@ class _HomePageState extends State<HomePage> {
 
     return Scaffold(
       appBar: AppBar(
+<<<<<<< HEAD
+        backgroundColor: Color(0xFF3F4660),
+        foregroundColor: Colors.white,
+        title: Center(child: Text('Mental Healt'),),
+        leading: PopupMenuButton<String>(
+          onSelected: (value) {
+            // Realizar acciones según la selección del menú
+            if(value == 'logout'){
+              FirebaseAuth.instance.signOut();
+              Navigator.popAndPushNamed(context, '/login');
+            }else{
+              Navigator.popAndPushNamed(context, '/$value');
+            }
+
+            print('Opción seleccionada: $value');
+          },
+          itemBuilder: (BuildContext context) {
+            return [
+              PopupMenuItem(
+                value: 'profileShow',
+                child: Text('Perfil'),
+              ),
+              PopupMenuItem(
+                value: 'chat',
+                child: Text('Chat Bot'),
+              ),
+              PopupMenuItem(
+                value: 'listTests',
+                child: Text('Lista de test'),
+              ),
+              PopupMenuItem(
+                value: 'listTechniquels',
+                child: Text('Lista de técnicas'),
+              ),
+              PopupMenuItem(
+                value: 'logout',
+                child: Text('Cerrar Sesión'),
+              ),
+            ];
+          },
+          icon: Icon(Icons.menu), // Ícono de menú
+        ),
+        actions: [
+          IconButton(onPressed: (){Navigator.popAndPushNamed(context, '/profileShow');}, icon: Icon(Icons.account_circle))
+        ],
+=======
         title: Center(child: Text('Mental Health'),),
+>>>>>>> 6e3bc2b08fd3d0e935a777f6c4fd1dbf8e528623
       ),
       drawer: SidebarMenu(),
       body: ListView(
@@ -124,7 +171,7 @@ class _HomePageState extends State<HomePage> {
         children: [
           Container(
             decoration: BoxDecoration(
-
+              
             ),
             child: Center(
               child: Text(
@@ -165,8 +212,8 @@ class _HomePageState extends State<HomePage> {
           SizedBox(height: 45,),
 
           Container(
-            width: 300, // Ancho del contenedor
-            height: 300, // Alto del contenedor
+            width: 200, // Ancho del contenedor
+            height: 150, // Alto del contenedor
             padding: EdgeInsets.all(8), // Espacio alrededor del contenido
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(12),
@@ -184,10 +231,14 @@ class _HomePageState extends State<HomePage> {
                           child: Container(
                             margin: EdgeInsets.all(4),
                             decoration: BoxDecoration(
-                              color: Colors.deepPurple[200],
+                              border: Border.all(
+                                color: Color.fromARGB(255, 184, 169, 224), // Color del contorno
+                                width: 3.0, // Grosor del contorno
+                              ),
+                              color: Color.fromARGB(255, 97, 85, 135),
                               borderRadius: BorderRadius.circular(8),
                             ),
-                            child: Center(child: Text('Test')),
+                            child: Center(child: Text('Test',style: TextStyle(color: Colors.white,),)),
                           ),
                         ),
                       ),
@@ -199,52 +250,21 @@ class _HomePageState extends State<HomePage> {
                           child: Container(
                             margin: EdgeInsets.all(4),
                             decoration: BoxDecoration(
-                              color: Colors.deepPurple[200],
+                              color: Color.fromARGB(255, 97, 85, 135),
+                               border: Border.all(
+                                color: Color.fromARGB(255, 184, 169, 224), // Color del contorno
+                                width: 3.0, // Grosor del contorno
+                              ),
                               borderRadius: BorderRadius.circular(8),
                             ),
-                            child: Center(child: Text('Opción 2')),
+                            child: Center(child: Text('Técnicas de ayuda',style: TextStyle(color: Colors.white,),)),
                           ),
                         ),
                       ),
                     ],
                   ),
                 ),
-                Expanded(
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: GestureDetector(
-                          onTap: () {
-                            print('Opción 3 presionada'); // Acción cuando se presiona
-                          },
-                          child: Container(
-                            margin: EdgeInsets.all(4),
-                            decoration: BoxDecoration(
-                              color: Colors.deepPurple[200],
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            child: Center(child: Text('Opción 3')),
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        child: GestureDetector(
-                          onTap: () {
-                            print('Opción 4 presionada'); // Acción cuando se presiona
-                          },
-                          child: Container(
-                            margin: EdgeInsets.all(4),
-                            decoration: BoxDecoration(
-                              color: Colors.deepPurple[200],
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            child: Center(child: Text('Opción 4')),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+                
               ],
             ),
           )

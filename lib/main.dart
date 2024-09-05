@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:mental_health/pages/Techniquels/Breathing_4_7_8.dart';
+import 'package:mental_health/pages/Techniquels/PlaneAtentionMeditation.dart';
 import 'package:mental_health/pages/Techniquels/TechniquelsList.dart';
 import 'package:mental_health/pages/chat/chat.dart';
 import 'package:mental_health/pages/home/home.dart';
@@ -26,8 +28,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Mi Aplicación',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
-        scaffoldBackgroundColor: Colors.white,
+        primarySwatch: Colors.blueGrey,
+        scaffoldBackgroundColor: Color(0xFF3F4660),
         textTheme: TextTheme(
           bodyMedium: TextStyle(color: Colors.grey[800], fontSize: 16),
         ),
@@ -48,6 +50,7 @@ class MyApp extends StatelessWidget {
         '/percivedStressScale': (context) => PercivedStressScalePage(),
         '/listTechniquels':(context) => TechniquelsListPage(),
         '/breathing_4_7_8':(context) => Breathing_4_7_8(),
+        '/planeAtentionMeditation':(context) => planeAtentionMeditation(),
       },
     );
   }
