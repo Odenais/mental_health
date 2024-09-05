@@ -15,8 +15,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-
-
   final Profile _profile = Profile();
   String? _apodo;
 
@@ -85,7 +83,8 @@ class _HomePageState extends State<HomePage> {
       await _flutterTts.speak(greeting);
     } else {
       // Si el apodo es nulo, usa un saludo genérico
-      await _flutterTts.speak(greeting.replaceAll("$_apodo", "a nuestra aplicación"));
+      await _flutterTts
+          .speak(greeting.replaceAll("$_apodo", "a nuestra aplicación"));
     }
   }
 
@@ -112,21 +111,23 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final User? user = FirebaseAuth.instance.currentUser; // Obtener usuario autenticado
+    final User? user =
+        FirebaseAuth.instance.currentUser; // Obtener usuario autenticado
 
     return Scaffold(
       appBar: AppBar(
-<<<<<<< HEAD
         backgroundColor: Color(0xFF3F4660),
         foregroundColor: Colors.white,
-        title: Center(child: Text('Mental Healt'),),
+        title: Center(
+          child: Text('Mental Healt'),
+        ),
         leading: PopupMenuButton<String>(
           onSelected: (value) {
             // Realizar acciones según la selección del menú
-            if(value == 'logout'){
+            if (value == 'logout') {
               FirebaseAuth.instance.signOut();
               Navigator.popAndPushNamed(context, '/login');
-            }else{
+            } else {
               Navigator.popAndPushNamed(context, '/$value');
             }
 
@@ -159,20 +160,19 @@ class _HomePageState extends State<HomePage> {
           icon: Icon(Icons.menu), // Ícono de menú
         ),
         actions: [
-          IconButton(onPressed: (){Navigator.popAndPushNamed(context, '/profileShow');}, icon: Icon(Icons.account_circle))
+          IconButton(
+              onPressed: () {
+                Navigator.popAndPushNamed(context, '/profileShow');
+              },
+              icon: Icon(Icons.account_circle))
         ],
-=======
-        title: Center(child: Text('Mental Health'),),
->>>>>>> 6e3bc2b08fd3d0e935a777f6c4fd1dbf8e528623
       ),
       drawer: SidebarMenu(),
       body: ListView(
         padding: EdgeInsets.all(30),
         children: [
           Container(
-            decoration: BoxDecoration(
-              
-            ),
+            decoration: BoxDecoration(),
             child: Center(
               child: Text(
                 'Bienvenido, $_apodo',
@@ -185,32 +185,26 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
           ),
-
-          SizedBox(height: 45,),
-
+          SizedBox(
+            height: 45,
+          ),
           Column(
-
             children: [
               Container(
-
-                height: MediaQuery.of(context).size.height-600,
-                decoration: BoxDecoration(
-                ),
+                height: MediaQuery.of(context).size.height - 600,
+                decoration: BoxDecoration(),
                 child: ElevatedButton(
-
-                    onPressed: (){},
+                    onPressed: () {},
                     child: Icon(
                       Icons.mic,
-                      size: MediaQuery.of(context).size.width-100,
-                    )
-                ),
+                      size: MediaQuery.of(context).size.width - 100,
+                    )),
               ),
             ],
           ),
-
-
-          SizedBox(height: 45,),
-
+          SizedBox(
+            height: 45,
+          ),
           Container(
             width: 200, // Ancho del contenedor
             height: 150, // Alto del contenedor
@@ -226,49 +220,63 @@ class _HomePageState extends State<HomePage> {
                       Expanded(
                         child: GestureDetector(
                           onTap: () {
-                            print('Test presionado'); // Acción cuando se presiona
+                            print(
+                                'Test presionado'); // Acción cuando se presiona
                           },
                           child: Container(
                             margin: EdgeInsets.all(4),
                             decoration: BoxDecoration(
                               border: Border.all(
-                                color: Color.fromARGB(255, 184, 169, 224), // Color del contorno
+                                color: Color.fromARGB(
+                                    255, 184, 169, 224), // Color del contorno
                                 width: 3.0, // Grosor del contorno
                               ),
                               color: Color.fromARGB(255, 97, 85, 135),
                               borderRadius: BorderRadius.circular(8),
                             ),
-                            child: Center(child: Text('Test',style: TextStyle(color: Colors.white,),)),
+                            child: Center(
+                                child: Text(
+                              'Test',
+                              style: TextStyle(
+                                color: Colors.white,
+                              ),
+                            )),
                           ),
                         ),
                       ),
                       Expanded(
                         child: GestureDetector(
                           onTap: () {
-                            print('Opción 2 presionada'); // Acción cuando se presiona
+                            print(
+                                'Opción 2 presionada'); // Acción cuando se presiona
                           },
                           child: Container(
                             margin: EdgeInsets.all(4),
                             decoration: BoxDecoration(
                               color: Color.fromARGB(255, 97, 85, 135),
-                               border: Border.all(
-                                color: Color.fromARGB(255, 184, 169, 224), // Color del contorno
+                              border: Border.all(
+                                color: Color.fromARGB(
+                                    255, 184, 169, 224), // Color del contorno
                                 width: 3.0, // Grosor del contorno
                               ),
                               borderRadius: BorderRadius.circular(8),
                             ),
-                            child: Center(child: Text('Técnicas de ayuda',style: TextStyle(color: Colors.white,),)),
+                            child: Center(
+                                child: Text(
+                              'Técnicas de ayuda',
+                              style: TextStyle(
+                                color: Colors.white,
+                              ),
+                            )),
                           ),
                         ),
                       ),
                     ],
                   ),
                 ),
-                
               ],
             ),
           )
-
         ],
       ),
       /*Padding(
