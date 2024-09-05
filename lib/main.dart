@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:mental_health/pages/Techniquels/Breathing_4_7_8.dart';
+import 'package:mental_health/pages/Techniquels/Historial.dart';
 import 'package:mental_health/pages/Techniquels/PlaneAtentionMeditation.dart';
 import 'package:mental_health/pages/Techniquels/TechniquelsList.dart';
 import 'package:mental_health/pages/chat/chat.dart';
@@ -51,6 +52,7 @@ class MyApp extends StatelessWidget {
         '/listTechniquels':(context) => TechniquelsListPage(),
         '/breathing_4_7_8':(context) => Breathing_4_7_8(),
         '/planeAtentionMeditation':(context) => planeAtentionMeditation(),
+        '/historial':(context) => TestHistoryPage(),
       },
     );
   }

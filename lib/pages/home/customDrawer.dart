@@ -92,6 +92,13 @@ class _CustomDrawerState extends State<CustomDrawer> {
                   },
                 ),
                 ListTile(
+                  leading: Icon(Icons.list),
+                  title: Text('Historial'),
+                  onTap: () {
+                    Navigator.popAndPushNamed(context, '/historial');
+                  },
+                ),
+                ListTile(
                   leading: Icon(Icons.list_alt),
                   title: Text('Lista de técnicas'),
                   onTap: () {

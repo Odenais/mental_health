@@ -91,6 +91,7 @@ class Profile {
     }
   }
 
+
   /*
   Future<String?> getApodoByCorreo(String correo) async {
     try {
@@ -158,6 +159,33 @@ class Profile {
       return null; // Retornar null en caso de error
     }
   }
+
+  Future<Map<String, dynamic>?> getTestByCorreo(String email) async {
+    try {
+      var collection = _firestore.collection('users');
+      var querySnapshot = await collection.where('Correo', isEqualTo: email).get();
+
+      if (querySnapshot.docs.isNotEmpty) {
+        var document = querySnapshot.docs.first;
+        var testData = document.get('test'); // Obtener el campo 'test'
+
+        // Depurar para ver qué se está obteniendo
+        print("Dato de 'test': $testData");
+
+        // Verificar si es un Map
+        if (testData is Map<String, dynamic>) {
+          return testData; // Retornar el mapa de tests
+        } else {
+          print("El campo 'test' no es un mapa o está vacío.");
+          return null;
+        }
+      }
+    } catch (e) {
+      print("Error al obtener el test: $e");
+      return null; // Retornar null en caso de error
+    }
+  }
+
 
   String initializeEmail() {
     final User? user = FirebaseAuth.instance.currentUser;
