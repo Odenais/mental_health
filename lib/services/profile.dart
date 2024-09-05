@@ -18,7 +18,8 @@ class Profile {
         'Nombre completo': nombreCompleto,
         'Apodo': apodo,
         'Correo': correo,
-        'Fecha de nacimiento': Timestamp.fromDate(fechaNacimiento), // Conversión a Timestamp
+        'Fecha de nacimiento':
+            Timestamp.fromDate(fechaNacimiento), // Conversión a Timestamp
       });
       print('Usuario creado correctamente');
     } catch (e) {
@@ -26,18 +27,23 @@ class Profile {
     }
   }
 
-  Future<void> addHistoricalDataToFirestore(String field, String historicalKey, String dato1, String dato2) async {
+  Future<void> addHistoricalDataToFirestore(
+      String field, String historicalKey, String dato1, String dato2) async {
     try {
       String correo = initializeEmail();
-      var collection = FirebaseFirestore.instance.collection('users'); // Instancia de Firestore
-      var querySnapshot = await collection.where('Correo', isEqualTo: correo).get();
+      var collection = FirebaseFirestore.instance
+          .collection('users'); // Instancia de Firestore
+      var querySnapshot =
+          await collection.where('Correo', isEqualTo: correo).get();
 
       if (querySnapshot.docs.isNotEmpty) {
         // Si existe un documento con el correo proporcionado
-        var document = querySnapshot.docs.first; // Primer documento que coincide
+        var document =
+            querySnapshot.docs.first; // Primer documento que coincide
 
         // Obtener la fecha y hora actual en formato deseado
-        String currentDateTime = DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now());
+        String currentDateTime =
+            DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now());
 
         // Crear un nuevo histórico con los datos
         Map<String, dynamic> newHistorical = {
@@ -48,16 +54,21 @@ class Profile {
 
         // Leer el documento actual para obtener el campo existente
         var docSnapshot = await collection.doc(document.id).get();
-        Map<String, dynamic> data = docSnapshot.data() as Map<String, dynamic>? ?? {};
+        Map<String, dynamic> data =
+            docSnapshot.data() as Map<String, dynamic>? ?? {};
 
         // Obtener el mapa existente o inicializar uno vacío si no existe
-        Map<String, dynamic> existingMap = data[field] as Map<String, dynamic>? ?? {};
+        Map<String, dynamic> existingMap =
+            data[field] as Map<String, dynamic>? ?? {};
 
         // Obtener la lista de históricos existentes bajo la clave especificada o inicializar una lista vacía si no existe
-        List<dynamic> existingHistoriesDynamic = existingMap[historicalKey] as List<dynamic>? ?? [];
+        List<dynamic> existingHistoriesDynamic =
+            existingMap[historicalKey] as List<dynamic>? ?? [];
 
         // Convertir la lista dinámica a una lista de mapas
-        List<Map<String, dynamic>> existingHistories = existingHistoriesDynamic.map((e) => e as Map<String, dynamic>).toList();
+        List<Map<String, dynamic>> existingHistories = existingHistoriesDynamic
+            .map((e) => e as Map<String, dynamic>)
+            .toList();
 
         // Agregar el nuevo histórico a la lista existente
         existingHistories.add(newHistorical);
@@ -67,7 +78,8 @@ class Profile {
 
         // Actualizar el documento con el mapa modificado
         await collection.doc(document.id).update({
-          field: existingMap, // Actualizamos el campo con el mapa que ahora incluye el nuevo histórico
+          field:
+              existingMap, // Actualizamos el campo con el mapa que ahora incluye el nuevo histórico
         });
 
         print('Datos históricos añadidos exitosamente');
@@ -102,7 +114,8 @@ class Profile {
   Future<String?> getDataByCorreo(String correo, String data) async {
     try {
       var collection = _firestore.collection('users');
-      var querySnapshot = await collection.where('Correo', isEqualTo: correo).get();
+      var querySnapshot =
+          await collection.where('Correo', isEqualTo: correo).get();
       if (querySnapshot.docs.isNotEmpty) {
         var document = querySnapshot.docs.first;
         var aux = document.get(data);
@@ -122,7 +135,8 @@ class Profile {
   Future<DateTime?> getFechaNacimientoByCorreo(String email) async {
     try {
       var collection = _firestore.collection('users');
-      var querySnapshot = await collection.where('Correo', isEqualTo: email).get();
+      var querySnapshot =
+          await collection.where('Correo', isEqualTo: email).get();
       if (querySnapshot.docs.isNotEmpty) {
         var document = querySnapshot.docs.first;
         var fechaDeNacimientoData = document.get('Fecha de nacimiento');
@@ -157,10 +171,12 @@ class Profile {
       var collection = _firestore.collection('users');
 
       // Realiza una consulta para obtener el documento que coincide con el correo electrónico
-      var querySnapshot = await collection.where('Correo', isEqualTo: email).get();
+      var querySnapshot =
+          await collection.where('Correo', isEqualTo: email).get();
 
       if (querySnapshot.docs.isEmpty) {
-        throw Exception('No se encontró el usuario con el correo proporcionado');
+        throw Exception(
+            'No se encontró el usuario con el correo proporcionado');
       }
 
       // Supongamos que solo hay un documento que coincide
