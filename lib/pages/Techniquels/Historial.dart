@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:mental_health/services/profile.dart';
+import 'package:mental_health/widgets/menu.dart';
 
 class TestHistoryPage extends StatefulWidget {
   @override
@@ -36,8 +37,10 @@ class _TestHistoryPageState extends State<TestHistoryPage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color(0xFF3F4660),
+        foregroundColor: Colors.white,
         title: Text("Historial de Tests"),
       ),
+      drawer: SidebarMenu(),
       body: FutureBuilder<Map<String, dynamic>?>(
         future: _profile.getTestByCorreo(_email!), // Llamada al método para obtener los datos
         builder: (context, snapshot) {
@@ -102,6 +105,7 @@ class HistoryDetailPage extends StatelessWidget {
         backgroundColor: Color(0xFF3F4660),
         title: Text("Detalles del Test"),
       ),
+
       body: Padding(
         padding: EdgeInsets.all(16.0),
         child: Column(

@@ -17,25 +17,14 @@ class TechniquelsListPage extends StatelessWidget {
         child: ListView(
           children: [
             Container(
-              decoration: BoxDecoration(
-                color: Colors.grey,
-                borderRadius: BorderRadius.circular(15),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.white.withOpacity(0.2), // Color de la sombra
-                    spreadRadius: 2, // Extensión de la sombra
-                    blurRadius: 15, // Radio de desenfoque de la sombra
-                    offset: Offset(0, 4), // Desplazamiento de la sombra (x, y)
-                  ),
-                ],
-              ),
+              decoration: CardDecoration.decoration,
               child: ListTile(
                 leading: Icon(
                   Icons.air,
-                  color: Colors.white,
+                  color: Colors.black87,
                   size: 40,
                 ),
-                textColor: Colors.white,
+                textColor: Colors.black87,
                 title: Text(
                   "Respiración 4-7-8",
                   style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
@@ -51,25 +40,14 @@ class TechniquelsListPage extends StatelessWidget {
               height: 15,
             ),
             Container(
-              decoration: BoxDecoration(
-                color: Colors.grey,
-                borderRadius: BorderRadius.circular(15),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.white.withOpacity(0.2), // Color de la sombra
-                    spreadRadius: 2, // Extensión de la sombra
-                    blurRadius: 15, // Radio de desenfoque de la sombra
-                    offset: Offset(0, 4), // Desplazamiento de la sombra (x, y)
-                  ),
-                ],
-              ),
+              decoration: CardDecoration.decoration,
               child: ListTile(
                 leading: Icon(
                   Icons.connect_without_contact,
-                  color: Colors.white,
+                  color: Colors.black87,
                   size: 40,
                 ),
-                textColor: Colors.white,
+                textColor: Colors.black87,
                 title: Text(
                   "Meditación de atención plena",
                   style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
@@ -87,4 +65,21 @@ class TechniquelsListPage extends StatelessWidget {
       ),
     );
   }
+}
+
+// Clase para encapsular la decoración del Container
+class CardDecoration {
+  static BoxDecoration get decoration => BoxDecoration(
+    color: Colors.white, // Fondo blanco
+    borderRadius: BorderRadius.circular(15),
+    border: Border.all(color: Colors.grey), // Borde gris
+    boxShadow: [
+      BoxShadow(
+        color: Colors.grey.withOpacity(0.5), // Color de la sombra
+        spreadRadius: 2, // Extensión de la sombra
+        blurRadius: 10, // Radio de desenfoque de la sombra
+        offset: Offset(0, 4), // Desplazamiento de la sombra (x, y)
+      ),
+    ],
+  );
 }
