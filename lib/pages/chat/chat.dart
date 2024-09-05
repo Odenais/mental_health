@@ -17,6 +17,8 @@ class ChatbotPage extends StatefulWidget {
   _ChatbotPageState createState() => _ChatbotPageState();
 }
 
+enum TtsState { playing, stopped, paused, continued }
+
 class _ChatbotPageState extends State<ChatbotPage> {
   final TextEditingController textController = TextEditingController();
   final ScrollController scrollController = ScrollController();
@@ -29,10 +31,62 @@ class _ChatbotPageState extends State<ChatbotPage> {
   double confidence = 1.0;
   List<Map<String, String>> messages = [];
 
+  TtsState ttsState = TtsState.stopped;
+  bool get isPlaying => ttsState == TtsState.playing;
+  bool get isStopped => ttsState == TtsState.stopped;
+  bool get isPaused => ttsState == TtsState.paused;
+  bool get isContinued => ttsState == TtsState.continued;
+
   @override
   void initState() {
     super.initState();
+    initTts();
+  }
+
+  dynamic initTts() {
     _flutterTts = FlutterTts();
+
+    _flutterTts.setStartHandler(() {
+      setState(() {
+        print("Playing");
+        ttsState = TtsState.playing;
+      });
+    });
+
+    _flutterTts.setCompletionHandler(() {
+      setState(() {
+        print("Complete");
+        ttsState = TtsState.stopped;
+      });
+    });
+
+    _flutterTts.setCancelHandler(() {
+      setState(() {
+        print("Cancel");
+        ttsState = TtsState.stopped;
+      });
+    });
+
+    _flutterTts.setPauseHandler(() {
+      setState(() {
+        print("Paused");
+        ttsState = TtsState.paused;
+      });
+    });
+
+    _flutterTts.setContinueHandler(() {
+      setState(() {
+        print("Continued");
+        ttsState = TtsState.continued;
+      });
+    });
+
+    _flutterTts.setErrorHandler((msg) {
+      setState(() {
+        print("error: $msg");
+        ttsState = TtsState.stopped;
+      });
+    });
   }
 
   @override
@@ -48,6 +102,7 @@ class _ChatbotPageState extends State<ChatbotPage> {
 
     // Reproduce el texto limpio usando el motor de texto a voz
     await _flutterTts.speak(cleanText);
+    setState(() => isSpeaking(false));
   }
 
   /*Future<void> initSpeech() async {
@@ -148,12 +203,16 @@ class _ChatbotPageState extends State<ChatbotPage> {
           'User', query); // Mostrar la consulta completa en caso de error
       addMessage('Bot', 'Error: ${e.toString()}');
     } finally {
-      isSpeaking(false);
+      isSpeaking(false); //Aqui tiene que estar en falso y hacerlo bucle hasta que termine de hablar. solo la primera vez, despues ni los puntos
+      //Si le pongo false si salen los puntos en los demas
+      isSpeaking(true);
+      
       textController.clear();
       scrollToEnd();
       setState(() {
         loading = false;
       });
+
     }
   }
 
@@ -250,6 +309,12 @@ class _ChatbotPageState extends State<ChatbotPage> {
     if (query.trim().isNotEmpty) {
       generateContent(query); // Enviar la consulta al modelo
     }
+  }
+
+  Future<void> _stopSpeech() async {
+    var result = await _flutterTts.stop();
+    if (result == 1) setState(() => ttsState = TtsState.stopped);
+
   }
 
   Future<String?> getApodo() async {
@@ -368,7 +433,8 @@ class _ChatbotPageState extends State<ChatbotPage> {
                                     stateMachineController?.findInput("Reset");
                                 download =
                                     stateMachineController?.findSMI("Download");
-                                isSpeak = stateMachineController?.findSMI("Speak");
+                                //cual es la diferencia? smi - input
+                                isSpeak = stateMachineController?.findInput("Speak");
                               },
                             ),
                           ))),
@@ -426,9 +492,19 @@ class _ChatbotPageState extends State<ChatbotPage> {
                               onPressed: () {
                                 handleSubmitted(textController.text);
                                 isChatting(true);
-
+                                isSpeaking(true);
                               },
                               color: Color.fromARGB(255, 97, 85, 133)),
+                        ),
+
+                        CircleAvatar(
+                          radius: 25,
+                          backgroundColor: Colors.redAccent,
+                          child: IconButton(
+                            icon: Icon(Icons.stop),
+                            onPressed: _stopSpeech,
+                            color: Colors.white,
+                          ),
                         ),
                       ],
                     ),
