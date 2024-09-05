@@ -10,7 +10,7 @@ class SidebarMenu extends StatelessWidget {
         children: [
           DrawerHeader(
             decoration: BoxDecoration(
-              color: Colors.blue,
+              color: Color(0xFF3F4660),
             ),
             child: Text(
               'Menú',
