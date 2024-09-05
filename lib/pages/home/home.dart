@@ -118,54 +118,6 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         backgroundColor: Color(0xFF3F4660),
         foregroundColor: Colors.white,
-        title: Center(
-          child: Text('Mental Healt'),
-        ),
-        leading: PopupMenuButton<String>(
-          onSelected: (value) {
-            // Realizar acciones según la selección del menú
-            if (value == 'logout') {
-              FirebaseAuth.instance.signOut();
-              Navigator.popAndPushNamed(context, '/login');
-            } else {
-              Navigator.popAndPushNamed(context, '/$value');
-            }
-
-            print('Opción seleccionada: $value');
-          },
-          itemBuilder: (BuildContext context) {
-            return [
-              PopupMenuItem(
-                value: 'profileShow',
-                child: Text('Perfil'),
-              ),
-              PopupMenuItem(
-                value: 'chat',
-                child: Text('Chat Bot'),
-              ),
-              PopupMenuItem(
-                value: 'listTests',
-                child: Text('Lista de test'),
-              ),
-              PopupMenuItem(
-                value: 'listTechniquels',
-                child: Text('Lista de técnicas'),
-              ),
-              PopupMenuItem(
-                value: 'logout',
-                child: Text('Cerrar Sesión'),
-              ),
-            ];
-          },
-          icon: Icon(Icons.menu), // Ícono de menú
-        ),
-        actions: [
-          IconButton(
-              onPressed: () {
-                Navigator.popAndPushNamed(context, '/profileShow');
-              },
-              icon: Icon(Icons.account_circle))
-        ],
       ),
       drawer: SidebarMenu(),
       body: ListView(
