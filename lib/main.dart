@@ -40,7 +40,7 @@ class MyApp extends StatelessWidget {
           elevation: 0,
         ),
       ),
-      home: AuthWrapper(), // Aquí usamos el AuthWrapper
+      home: SplashScreen(),
       routes: {
         '/signup': (context) => SignupPage(),
         '/signupProfile': (context) => SignupProfilePage(),
@@ -50,10 +50,10 @@ class MyApp extends StatelessWidget {
         '/profileShow': (context) => ProfileShowPage(),
         '/listTests': (context) => TestListPage(),
         '/percivedStressScale': (context) => PercivedStressScalePage(),
-        '/listTechniquels':(context) => TechniquelsListPage(),
-        '/breathing_4_7_8':(context) => Breathing_4_7_8(),
-        '/planeAtentionMeditation':(context) => planeAtentionMeditation(),
-        '/historial':(context) => TestHistoryPage(),
+        '/listTechniquels': (context) => TechniquelsListPage(),
+        '/breathing_4_7_8': (context) => Breathing_4_7_8(),
+        '/planeAtentionMeditation': (context) => planeAtentionMeditation(),
+        '/historial': (context) => TestHistoryPage(),
       },
     );
   }
@@ -107,50 +107,32 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> {
   @override
+  void initState() {
+    super.initState();
+    _navigateToHome();
+  }
+
+  _navigateToHome() async {
+    await Future.delayed(Duration(seconds: 3), () {});
+    Navigator.pushReplacement(
+        context, MaterialPageRoute(builder: (context) => AuthWrapper()));
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [Colors.blue.shade300, Colors.blue.shade600],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ),
-        ),
-        child: Center(
+      body: Center(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(
-                Icons.health_and_safety,
-                size: 100,
-                color: Colors.white,
-              ),
-              SizedBox(height: 20),
-              Text(
-                'Bienvenido a Mi App',
-                style: TextStyle(
-                  fontSize: 24,
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              SizedBox(height: 30),
-              CircularProgressIndicator(
-                valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-              ), // Barra circular de progreso
-              SizedBox(height: 20),
-              Text(
-                'Cargando...',
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.white,
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Image.asset(
+              'assets/pixelcut-export-removebg-preview.png'), // Imagen de la splash screen
+          SizedBox(
+              height: 20), // Espacio entre la imagen y el indicador de carga
+          CircularProgressIndicator(), // Indicador de carga
+        ],
+      )),
     );
   }
 }
