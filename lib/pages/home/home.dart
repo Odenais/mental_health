@@ -2,6 +2,7 @@ import 'dart:math';
 import 'package:avatar_glow/avatar_glow.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:mental_health/pages/home/customDrawer.dart';
 import 'package:mental_health/services/profile.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:mental_health/pages/chat/chat.dart';
@@ -66,13 +67,17 @@ class _HomePageState extends State<HomePage> {
     // Selecciona una lista de saludos basada en la hora del día
     List<String> greetings;
     if (hour >= 5 && hour < 12) {
+      CustomDrawer.click(false);
       greetings = morningGreetings;
     } else if (hour >= 12 && hour < 18) {
+      CustomDrawer.click(false);
       greetings = afternoonGreetings;
     } else if (hour >= 18 && hour < 23) {
+      CustomDrawer.click(true);
       greetings = eveningGreetings;
     } else {
       greetings = lateNightGreetings;
+      CustomDrawer.click(true);
     }
 
     // Selecciona un saludo aleatorio

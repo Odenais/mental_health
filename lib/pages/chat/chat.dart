@@ -135,7 +135,10 @@ class _ChatbotPageState extends State<ChatbotPage> {
       // Agregar el mensaje del usuario y del bot al chat
 
       addMessage('Bot', botResponse);
+
+      // Verifica si el motor de texto a voz ya está hablando
       isChatting(false);
+      isSpeaking(true);
       reset(true);
 
       // Llamar al método para que lea el texto del bot
@@ -145,6 +148,7 @@ class _ChatbotPageState extends State<ChatbotPage> {
           'User', query); // Mostrar la consulta completa en caso de error
       addMessage('Bot', 'Error: ${e.toString()}');
     } finally {
+      isSpeaking(false);
       textController.clear();
       scrollToEnd();
       setState(() {
@@ -175,7 +179,7 @@ class _ChatbotPageState extends State<ChatbotPage> {
         margin: EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
         padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 14.0),
         decoration: BoxDecoration(
-          color: isUser ? Colors.blueAccent : Colors.grey[300],
+          color: isUser ? Color.fromARGB(255, 170, 149, 208) : Colors.grey[300],
           borderRadius: BorderRadius.circular(12.0),
         ),
         child: RichText(
@@ -264,13 +268,19 @@ class _ChatbotPageState extends State<ChatbotPage> {
 
   // COMPORTAMIENTO DEL AVATAR
 
+  rive.SMIInput<bool>? isSpeak;
   rive.SMIInput<bool>? isNoInternet;
   rive.SMIInput<bool>? isError;
   rive.SMIInput<bool>? isChat;
   rive.SMIInput<bool>? isReset;
   rive.SMINumber? download;
 
-  late rive.StateMachineController? stateMachineController;
+  late rive.StateMachineController? stateMachineController,
+      stateMachineControllerBg;
+
+  void isSpeaking(value){
+    isSpeak?.change(value);
+  }
 
   void isConnected(bool value) {
     isNoInternet?.change(value);
@@ -300,8 +310,9 @@ class _ChatbotPageState extends State<ChatbotPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        extendBodyBehindAppBar: true,
         appBar: AppBar(
-          title: Text('Chatbot'),
+          foregroundColor: Colors.white,
           centerTitle: true,
           backgroundColor: Colors.transparent,
           elevation: 0,
@@ -312,8 +323,24 @@ class _ChatbotPageState extends State<ChatbotPage> {
           decoration: BoxDecoration(color: Colors.black),
           child: Stack(
             children: [
+              Positioned.fill(
+                  child: SizedBox.expand(
+                      child: rive.RiveAnimation.asset(
+                          'assets/background_effect.riv',
+                          fit: BoxFit.cover,
+                          stateMachines: const ["State Machine 1"],
+                          onInit: (artBoard) {
+                stateMachineControllerBg =
+                    rive.StateMachineController.fromArtboard(
+                  artBoard,
+                  "State Machine 1",
+                );
+                if (stateMachineController == null) return;
+                artBoard.addController(stateMachineController!);
+              }))),
               Column(
                 children: [
+                  Padding(padding: EdgeInsets.only(top: 90)),
                   Expanded(
                       child: Container(
                           width: MediaQuery.of(context).size.width,
@@ -341,6 +368,7 @@ class _ChatbotPageState extends State<ChatbotPage> {
                                     stateMachineController?.findInput("Reset");
                                 download =
                                     stateMachineController?.findSMI("Download");
+                                isSpeak = stateMachineController?.findSMI("Speak");
                               },
                             ),
                           ))),
@@ -376,8 +404,8 @@ class _ChatbotPageState extends State<ChatbotPage> {
                               ),
                               focusedBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(15.0),
-                                borderSide:
-                                    BorderSide(color: Colors.blueAccent),
+                                borderSide: BorderSide(
+                                    color: Color.fromARGB(255, 170, 149, 208)),
                               ),
                               hintText: 'Escribe un mensaje',
                               hintStyle: TextStyle(color: Colors.white),
@@ -390,13 +418,17 @@ class _ChatbotPageState extends State<ChatbotPage> {
                           ),
                         ),
                         SizedBox(width: 8.0),
-                        IconButton(
-                          icon: Icon(Icons.send),
-                          onPressed: () {
-                            handleSubmitted(textController.text);
-                            isChatting(true);
-                          },
-                          color: Colors.blueAccent,
+                        CircleAvatar(
+                          radius: 25,
+                          backgroundColor: Colors.white,
+                          child: IconButton(
+                              icon: Icon(Icons.send),
+                              onPressed: () {
+                                handleSubmitted(textController.text);
+                                isChatting(true);
+
+                              },
+                              color: Color.fromARGB(255, 97, 85, 133)),
                         ),
                       ],
                     ),
