@@ -8,6 +8,7 @@ import 'package:flutter_tts/flutter_tts.dart';
 import 'package:mental_health/pages/chat/chat.dart';
 import 'package:intl/intl.dart';
 
+import '../../main.dart';
 import '../../widgets/menu.dart';
 
 class HomePage extends StatefulWidget {
@@ -65,17 +66,13 @@ class _HomePageState extends State<HomePage> {
     // Selecciona una lista de saludos basada en la hora del día
     List<String> greetings;
     if (hour >= 5 && hour < 12) {
-
       greetings = morningGreetings;
     } else if (hour >= 12 && hour < 18) {
-
       greetings = afternoonGreetings;
     } else if (hour >= 18 && hour < 23) {
-
       greetings = eveningGreetings;
     } else {
       greetings = lateNightGreetings;
-
     }
 
     // Selecciona un saludo aleatorio
@@ -148,13 +145,19 @@ class _HomePageState extends State<HomePage> {
           Column(
             children: [
               Container(
-                height: MediaQuery.of(context).size.height - 600,
+                height: MediaQuery
+                    .of(context)
+                    .size
+                    .height - 600,
                 decoration: BoxDecoration(),
                 child: ElevatedButton(
                     onPressed: () {},
                     child: Icon(
                       Icons.mic,
-                      size: MediaQuery.of(context).size.width - 100,
+                      size: MediaQuery
+                          .of(context)
+                          .size
+                          .width - 100,
                     )),
               ),
             ],
@@ -163,9 +166,12 @@ class _HomePageState extends State<HomePage> {
             height: 45,
           ),
           Container(
-            width: 200, // Ancho del contenedor
-            height: 150, // Alto del contenedor
-            padding: EdgeInsets.all(8), // Espacio alrededor del contenido
+            width: 200,
+            // Ancho del contenedor
+            height: 150,
+            // Alto del contenedor
+            padding: EdgeInsets.all(8),
+            // Espacio alrededor del contenido
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(12),
             ),
@@ -193,11 +199,11 @@ class _HomePageState extends State<HomePage> {
                             ),
                             child: Center(
                                 child: Text(
-                              'Test',
-                              style: TextStyle(
-                                color: Colors.white,
-                              ),
-                            )),
+                                  'Test',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                  ),
+                                )),
                           ),
                         ),
                       ),
@@ -220,11 +226,11 @@ class _HomePageState extends State<HomePage> {
                             ),
                             child: Center(
                                 child: Text(
-                              'Técnicas de ayuda',
-                              style: TextStyle(
-                                color: Colors.white,
-                              ),
-                            )),
+                                  'Técnicas de ayuda',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                  ),
+                                )),
                           ),
                         ),
                       ),
@@ -292,4 +298,56 @@ class _HomePageState extends State<HomePage> {
       ),*/
     );
   }
+}
+
+
+// Splash Screen
+class SplashScreen extends StatefulWidget {
+  @override
+  _SplashScreenState createState() => _SplashScreenState();
+}
+
+class _SplashScreenState extends State<SplashScreen> {
+  @override
+  void initState() {
+    super.initState();
+    _navigateToHome();
+  }
+
+  _navigateToHome() async {
+    await Future.delayed(Duration(seconds: 3), () {});
+    Navigator.pushReplacement(
+        context, MaterialPageRoute(builder: (context) => ChatbotPage()));
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Theme(
+      data: ThemeData(
+        // Definir aquí el tema local, por ejemplo:
+        primaryColor: Colors.blue, // Color primario
+        textTheme: TextTheme(
+
+        ),
+      ),
+      child: Scaffold(
+        backgroundColor: Colors.white, // Fondo blanco
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Image.asset('assets/pixelcut-export-removebg-preview.png'), // Imagen de la splash screen
+              SizedBox(height: 20), // Espacio entre la imagen y el indicador de carga
+              CircularProgressIndicator(
+                valueColor: AlwaysStoppedAnimation<Color>(Colors.blue), // Cambiar color del indicador de carga
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+
 }

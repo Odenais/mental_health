@@ -47,33 +47,55 @@ class _TestHistoryPageState extends State<TestHistoryPage> {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
-            return Center(child: Text("Error al obtener datos", style: TextStyle(color: Colors.white)));
+            return Center(child: Text("Error al obtener datos", style: TextStyle(color: Colors.red)));
           } else if (!snapshot.hasData || snapshot.data == null) {
-            return Center(child: Text("No hay historial disponible", style: TextStyle(color: Colors.white)));
+            return Center(child: Text("No hay historial disponible", style: TextStyle(color: Colors.grey)));
           } else {
             var testData = snapshot.data!;
             var historial = testData['historial'] as List<dynamic>?; // Obtener la lista de historial
 
             if (historial == null || historial.isEmpty) {
-              return Center(child: Text("No hay datos de historial disponibles", style: TextStyle(color: Colors.white)));
+              return Center(child: Text("No hay datos de historial disponibles", style: TextStyle(color: Colors.grey)));
             }
 
             return ListView.builder(
+              padding: EdgeInsets.all(16),
               itemCount: historial.length,
               itemBuilder: (context, index) {
                 var historialItem = historial[index];
 
                 // Verifica si cada item dentro de la lista es un Map
                 if (historialItem is Map<String, dynamic>) {
-                  return ListTile(
-                    title: Text("Historial ${index + 1}", style: TextStyle(color: Colors.white)),
-                    subtitle: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text("Nombre de test: ${historialItem['dato1']}", style: TextStyle(color: Colors.white)),
-                        Text("Resultado: ${historialItem['dato2']}", style: TextStyle(color: Colors.white)),
-                        Text("Fecha: ${historialItem['fecha']}", style: TextStyle(color: Colors.white)),
-                      ],
+                  return Card(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    margin: EdgeInsets.symmetric(vertical: 8),
+                    elevation: 4,
+                    child: ListTile(
+                      leading: Icon(Icons.history, color: Colors.blueAccent),
+                      title: Text(
+                        "Test ${index + 1}",
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      subtitle: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(height: 8),
+                          Text("Nombre del test: ${historialItem['dato1']}"),
+                          Text("Resultado: ${historialItem['dato2']}"),
+                          Text("Fecha: ${historialItem['fecha']}"),
+                        ],
+                      ),
+                      trailing: Icon(Icons.arrow_forward_ios, color: Colors.grey),
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => HistoryDetailPage(historyItem: historialItem),
+                          ),
+                        );
+                      },
                     ),
                   );
                 } else {
@@ -89,7 +111,6 @@ class _TestHistoryPageState extends State<TestHistoryPage> {
       ),
     );
   }
-
 }
 
 // Página de detalles del historial
@@ -103,26 +124,43 @@ class HistoryDetailPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color(0xFF3F4660),
-        title: Text("Detalles del Test"),
+        iconTheme: IconThemeData(color: Colors.white), // Color de la flecha de retorno
+        title: Text("Detalles del Test", style: TextStyle(color: Colors.white),),
       ),
-
       body: Padding(
         padding: EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              "Detalles del Test",
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+        child: Center(
+          child: Container(
+            width: 300, // Aquí defines el ancho del Card
+            child: Card(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+              elevation: 4,
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Detalles del Test",
+                      style: TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(height: 16),
+                    Text("Fecha: ${historyItem['fecha']}"),
+                    Text("Nombre del test: ${historyItem['dato1']}"),
+                    Text("Resultado: ${historyItem['dato2']}"),
+                  ],
+                ),
+              ),
             ),
-            SizedBox(height: 16),
-            Text("Fecha: ${historyItem['fecha']}"),
-            Text("Nombre del test: ${historyItem['dato1']}"),
-            Text("Resultado: ${historyItem['dato2']}"),
-            // Muestra más detalles según los datos almacenados
-          ],
+          ),
         ),
       ),
     );
   }
+
 }

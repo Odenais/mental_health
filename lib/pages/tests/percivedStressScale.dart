@@ -102,7 +102,7 @@ class _PercivedStressScalePageState extends State<PercivedStressScalePage> {
             icon: Icon(Icons.home),
             onPressed: () {
               Navigator.pushNamed(
-                  context, '/home'); // Navegar a la página de inicio
+                  context, '/listTests'); // Navegar a la página de inicio
             },
           ),
         ],
@@ -133,6 +133,13 @@ class _PercivedStressScalePageState extends State<PercivedStressScalePage> {
                       onPressed: () =>
                           _selectOption(_optionValues[_options[i]]!),
                       child: Text(_options[i]),
+                      style: ElevatedButton.styleFrom(
+                        side: BorderSide(color: Colors.blue), // Borde azul
+                        padding: EdgeInsets.symmetric(horizontal: 32, vertical: 12), // Tamaño del botón
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8), // Bordes redondeados
+                        ),
+                      ),
                     ),
                 ],
               ),

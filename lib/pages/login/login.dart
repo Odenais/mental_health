@@ -52,7 +52,7 @@ class _LoginPageState extends State<LoginPage> {
       });
 
       if (result != null) {
-        Navigator.popAndPushNamed(context, '/home');
+        Navigator.popAndPushNamed(context, '/splash');
       } else {
         // Mostrar un mensaje de error si el inicio de sesión falla
         ScaffoldMessenger.of(context).showSnackBar(
