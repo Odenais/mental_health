@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 
 import 'package:mental_health/widgets/menu.dart';
+import 'package:rive/rive.dart' as rive;
+import 'package:rive/rive.dart';
 
 class Breathing_4_7_8 extends StatefulWidget {
   @override
@@ -10,11 +12,13 @@ class Breathing_4_7_8 extends StatefulWidget {
 
 class _Breathing_4_7_8 extends State<Breathing_4_7_8> {
   bool buttonPress = false;
-
   String _text = "Inhala";
   Timer? _timer;
   int _start = 0;
   int aux = 0;
+
+  StateMachineController? _stateMachineController;
+  late rive.SMITrigger _incio;
 
   void _startTimer() {
     _timer = Timer.periodic(Duration(seconds: 1), (Timer timer) {
@@ -22,26 +26,34 @@ class _Breathing_4_7_8 extends State<Breathing_4_7_8> {
         _start++;
       });
 
+      if (_start == 1 && aux == 1) {
+        _text = "Inhala";
+      }
+
       if (_start > 4 && aux == 1) {
         _stopTimer();
         aux = 2;
         _text = "Mantener";
         _start = 0;
         _startTimer();
+      } else if (_start == 1 && aux == 2) {
+        _text = "Mantén";
       } else if (_start > 7 && aux == 2) {
         _stopTimer();
         aux = 3;
         _text = "Exhala";
         _start = 0;
         _startTimer();
+      } else if (_start == 1 && aux == 3) {
+        _text = "Exhala";
       } else if (_start > 8 && aux == 3) {
         _stopTimer();
         aux = 1;
         _start = 0;
         _text = "Inhala";
-        buttonPress = false;
-      } else {
-        _text = _start.toString();
+        setState(() {
+          buttonPress = false;  // Rehabilita el botón al finalizar
+        });
       }
     });
   }
@@ -64,6 +76,21 @@ class _Breathing_4_7_8 extends State<Breathing_4_7_8> {
     super.dispose();
   }
 
+  void _onRiveInit(Artboard artboard) {
+    try {
+      final controller = StateMachineController.fromArtboard(artboard, 'State Machine 1');
+      if (controller != null) {
+        artboard.addController(controller);
+        _stateMachineController = controller;
+        _incio = (controller.findInput<bool>('Iniciar') as rive.SMITrigger?)!;
+      } else {
+        print('StateMachineController no inicializado');
+      }
+    } catch (e) {
+      print('Error al inicializar Rive: $e');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -73,83 +100,106 @@ class _Breathing_4_7_8 extends State<Breathing_4_7_8> {
         title: Text("Respiración 4 7 8"),
       ),
       drawer: SidebarMenu(),
-      body: Container(
-        //height: MediaQuery.of(context).size.height*0.7,
-        decoration: BoxDecoration(),
-        child: Column(
-          children: [
-            Row(
-              children: [
-                Container(
-                  height: MediaQuery.of(context).size.height * 0.7,
-                  width: MediaQuery.of(context).size.width,
-                  color: Color(0xFF3F4660),
-                  child: Center(
-                    child: Column(
-                      children: [
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Text(
-                          "Siéntate o acuéstate en una posición cómoda.",
-                          style: TextStyle(
+      body: SingleChildScrollView(
+        child: Container(
+          decoration: BoxDecoration(),
+          child: Column(
+            children: [
+              Row(
+                children: [
+                  Container(
+                    height: MediaQuery.of(context).size.height * 0.7,
+                    width: MediaQuery.of(context).size.width,
+                    color: Color(0xFF3F4660),
+                    child: Center(
+                      child: Column(
+                        children: [
+                          SizedBox(height: 10),
+                          Text(
+                            "Siéntate o acuéstate en una posición cómoda.",
+                            style: TextStyle(
                               color: Colors.white,
                               fontSize: 24.0,
-                              fontWeight: FontWeight.bold),
-                        ),
-                        Text(
-                          "Inhala por la nariz durante 4 segundos, mantén la respiración durante 7 segundos y exhala lentamente por la boca durante 8 segundos. Repite este ciclo de 4 a 8 veces.",
-                          style: TextStyle(
-                            fontSize: 18,
-                            color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Expanded(
-                            child: Center(
-                          child: Text(
-                            "$_text",
+                          Text(
+                            "Inhala por la nariz durante 4 segundos, mantén la respiración durante 7 segundos y exhala lentamente por la boca durante 8 segundos. Repite este ciclo de 4 a 8 veces.",
                             style: TextStyle(
-                              fontSize: 70,
+                              fontSize: 18,
                               color: Colors.white,
                             ),
                           ),
-                        )),
-                      ],
+                          SizedBox(height: 10),
+                          Expanded(
+                            child: Center(
+                              child: Column(
+                                children: [
+                                  Text(
+                                    "$_text",
+                                    style: TextStyle(
+                                      fontSize: 70,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: 300,  // Establece el ancho deseado
+                                    height: 300, // Establece la altura deseada
+                                    child: rive.RiveAnimation.asset(
+                                      'assets/breathe.riv',
+                                      fit: BoxFit.contain,
+                                      onInit: _onRiveInit,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                )
-              ],
-            ),
-            Expanded(
-              child: Row(
+                ],
+              ),
+              Row(
                 children: [
                   Container(
                     width: MediaQuery.of(context).size.width,
                     child: ElevatedButton(
-                      onPressed: () {
-                        if (!buttonPress) {
-                          _text = "Inhala";
-                          aux = 1;
-                          _startTimer();
-                        }
-
-                        buttonPress = true;
+                      onPressed: buttonPress
+                          ? null // Deshabilita el botón si el ejercicio está en curso
+                          : () {
+                        setState(() {
+                          buttonPress = true;  // Deshabilita el botón al iniciar
+                        });
+                        _text = "Inhala";
+                        aux = 1;
+                        _startTimer();
+                        _delayAnimationStart(); // Inicia la animación con retraso
                       },
                       child: Text(
                         'COMENZAR',
                         style: TextStyle(fontSize: 24),
                       ),
                     ),
-                  )
+                  ),
                 ],
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
+  }
+
+  void _delayAnimationStart() {
+    // Espera 1 segundo antes de iniciar la animación
+    Future.delayed(Duration(seconds: 2), () {
+      _animate();  // Inicia la animación después del retraso
+    });
+  }
+
+  void _animate() {
+    _incio.fire();
   }
 }
