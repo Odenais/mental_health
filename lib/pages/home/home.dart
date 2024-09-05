@@ -65,17 +65,17 @@ class _HomePageState extends State<HomePage> {
     // Selecciona una lista de saludos basada en la hora del día
     List<String> greetings;
     if (hour >= 5 && hour < 12) {
-      CustomDrawer.click(false);
+      CustomDrawer.click();
       greetings = morningGreetings;
     } else if (hour >= 12 && hour < 18) {
-      CustomDrawer.click(false);
+      CustomDrawer.click();
       greetings = afternoonGreetings;
     } else if (hour >= 18 && hour < 23) {
-      CustomDrawer.click(true);
+      CustomDrawer.click();
       greetings = eveningGreetings;
     } else {
       greetings = lateNightGreetings;
-      CustomDrawer.click(true);
+      CustomDrawer.click();
     }
 
     // Selecciona un saludo aleatorio

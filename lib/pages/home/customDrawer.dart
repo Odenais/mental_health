@@ -4,10 +4,14 @@ import 'package:rive/rive.dart' as rive;
 
 class CustomDrawer extends StatelessWidget {
   static late rive.StateMachineController? stateMachineController;
-  static rive.SMIInput<bool>? clickChange;
+  static rive.SMIInput<bool>? night, day;
 
-  static void click(value){
-    clickChange?.change(value);
+  static void click() {
+    if (day!.value) {
+      night?.change(true);
+    } else {
+      day?.change(true);
+    }
   }
 
   @override
@@ -42,13 +46,14 @@ class CustomDrawer extends StatelessWidget {
                     onInit: (artBoard) {
                       stateMachineController =
                           rive.StateMachineController.fromArtboard(
-                            artBoard,
-                            "Button Animation",
-                          );
+                        artBoard,
+                        "Button Animation",
+                      );
                       if (stateMachineController == null) return;
                       artBoard.addController(stateMachineController!);
 
-                      clickChange = stateMachineController?.findInput("Click");
+                      night = stateMachineController?.findInput("Night");
+                      day = stateMachineController?.findInput("Day");
                     },
                   ),
                 ),
