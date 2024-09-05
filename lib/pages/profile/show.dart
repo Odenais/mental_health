@@ -62,6 +62,7 @@ class _ProfileShowPageState extends State<ProfileShowPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        foregroundColor: Colors.white,
         title: Text('Perfil'),
         centerTitle: true,
         backgroundColor: Colors.transparent,
@@ -80,22 +81,22 @@ class _ProfileShowPageState extends State<ProfileShowPage> {
                 children: [
                   Text(
                     'Nombre completo: $_nombre_completo',
-                    style: TextStyle(fontSize: 18),
+                    style: TextStyle(fontSize: 18, color: Colors.white),
                   ),
                   SizedBox(height: 8),
                   Text(
                     'Apodo: $_apodo',
-                    style: TextStyle(fontSize: 18),
+                    style: TextStyle(fontSize: 18, color: Colors.white),
                   ),
                   SizedBox(height: 8),
                   Text(
                     'Correo: $_email',
-                    style: TextStyle(fontSize: 18),
+                    style: TextStyle(fontSize: 18, color: Colors.white),
                   ),
                   SizedBox(height: 8),
                   Text(
                     'Fecha de Nacimiento: $_fecha_de_nacimiento',
-                    style: TextStyle(fontSize: 18),
+                    style: TextStyle(fontSize: 18, color: Colors.white),
                   ),
                   SizedBox(height: 16),
                   ElevatedButton(

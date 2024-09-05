@@ -75,7 +75,7 @@ class _PercivedStressScalePageState extends State<PercivedStressScalePage> {
 
   void _createHistorial(String dato1, String dato2) {
     final Profile _profile = Profile();
-    _profile.addHistoricalDataToFirestore('test','historial', dato1, dato2);
+    _profile.addHistoricalDataToFirestore('test', 'historial', dato1, dato2);
   }
 
   void _previousQuestion() {
@@ -94,6 +94,8 @@ class _PercivedStressScalePageState extends State<PercivedStressScalePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Color(0xFF3F4660),
+        foregroundColor: Colors.white,
         title: Text("Test de Estrés"),
         actions: [
           IconButton(
@@ -161,6 +163,8 @@ class CompletedPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Color(0xFF3F4660),
+        foregroundColor: Colors.white,
         title: Text("Test Completado"),
       ),
       body: Center(
