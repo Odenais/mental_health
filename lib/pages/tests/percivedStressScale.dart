@@ -117,13 +117,15 @@ class _PercivedStressScalePageState extends State<PercivedStressScalePage> {
                 children: [
                   Text(
                     "Pregunta ${_currentQuestionIndex + 1} de ${_questions.length}",
-                    style:
-                        TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                        fontSize: 16.0,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white),
                   ),
                   SizedBox(height: 10),
                   Text(
                     _questions[_currentQuestionIndex],
-                    style: TextStyle(fontSize: 18.0),
+                    style: TextStyle(fontSize: 18.0, color: Colors.white),
                   ),
                   SizedBox(height: 20),
                   for (int i = 0; i < _options.length; i++)
@@ -173,7 +175,7 @@ class CompletedPage extends StatelessWidget {
           children: [
             Text(
               "¡Has completado el test!",
-              style: TextStyle(fontSize: 24.0),
+              style: TextStyle(fontSize: 24.0, color: Colors.white),
             ),
             SizedBox(height: 20),
             Text(
@@ -181,11 +183,11 @@ class CompletedPage extends StatelessWidget {
               "• 14-26: Nivel moderado de estrés\n"
               "• 27-40: Alto nivel de estrés\n"
               "• 41-56: Estrés severo",
-              style: TextStyle(fontSize: 16.0, color: Colors.black87),
+              style: TextStyle(fontSize: 16.0, color: Colors.white),
             ),
             Text(
               "Tu puntaje total es: $score",
-              style: TextStyle(fontSize: 20.0),
+              style: TextStyle(fontSize: 20.0, color: Colors.white),
             ),
             SizedBox(height: 20),
             ElevatedButton(
@@ -200,7 +202,7 @@ class CompletedPage extends StatelessWidget {
                 Navigator.pushNamed(
                     context, '/home'); // Navegar a la página de inicio
               },
-              child: Text("Ir a /home"),
+              child: Text("Ir al Inicio"),
             ),
           ],
         ),

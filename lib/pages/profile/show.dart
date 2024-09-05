@@ -77,29 +77,94 @@ class _ProfileShowPageState extends State<ProfileShowPage> {
                 child:
                     CircularProgressIndicator()) // Muestra un loader mientras carga
             : Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                ///mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
+                  Container(),
+                  Stack(
+                    children: [
+                      Container(
+                        child: Icon(
+                          Icons.account_circle,
+                          size: MediaQuery.of(context).size.width * 0.6,
+                          color: Colors.white,
+                        ),
+                      ),
+                      Positioned(
+                        top: MediaQuery.of(context).size.width *
+                            0.45, // Ajusta la posición vertical
+                        left: MediaQuery.of(context).size.width *
+                            0.40, // Ajusta la posición horizontal
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            shape: CircleBorder(), // Define la forma circular
+                            padding: EdgeInsets.all(
+                                5), // Espacio alrededor del botón
+                          ),
+                          onPressed: () {
+                            // Navegar a la pantalla de actualización
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => UpdateProfilePage()),
+                            );
+                          },
+                          child: Icon(
+                            Icons.edit_document, // Ícono superpuesto
+                            size: 50, // Tamaño del ícono
+                            color: Colors.lightGreen, // Color del ícono
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                   Text(
-                    'Nombre completo: $_nombre_completo',
-                    style: TextStyle(fontSize: 18, color: Colors.white),
+                    '$_nombre_completo',
+                    style: TextStyle(fontSize: 40, color: Colors.white),
                   ),
                   SizedBox(height: 8),
                   Text(
                     'Apodo: $_apodo',
-                    style: TextStyle(fontSize: 18, color: Colors.white),
+                    style: TextStyle(fontSize: 19, color: Colors.white70),
                   ),
                   SizedBox(height: 8),
-                  Text(
-                    'Correo: $_email',
-                    style: TextStyle(fontSize: 18, color: Colors.white),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.all(13),
+                        child: Icon(
+                          Icons.email,
+                          color: Colors.white,
+                        ),
+                      ),
+                      Text(
+                        '$_email',
+                        style: TextStyle(fontSize: 21, color: Colors.white),
+                      ),
+                    ],
                   ),
                   SizedBox(height: 8),
-                  Text(
-                    'Fecha de Nacimiento: $_fecha_de_nacimiento',
-                    style: TextStyle(fontSize: 18, color: Colors.white),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.all(13),
+                        child: Icon(
+                          Icons.date_range_outlined,
+                          color: Colors.white,
+                        ),
+                      ),
+                      Text(
+                        'Fecha de Nacimiento: $_fecha_de_nacimiento',
+                        style: TextStyle(fontSize: 21, color: Colors.white),
+                      ),
+                    ],
                   ),
                   SizedBox(height: 16),
-                  ElevatedButton(
+                  /*ElevatedButton(
                     onPressed: () {
                       // Navegar a la pantalla de actualización
                       Navigator.push(
@@ -109,7 +174,7 @@ class _ProfileShowPageState extends State<ProfileShowPage> {
                       );
                     },
                     child: Text('Actualizar datos'),
-                  ),
+                  ),*/
                 ],
               ),
       ),

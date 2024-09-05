@@ -12,46 +12,121 @@ class TestListPage extends StatelessWidget {
         title: Text("Lista de Tests"),
       ),
       drawer: SidebarMenu(),
-      body: ListView(
-        children: [
-          ListTile(
-            textColor: Colors.white,
-            title: Text("Percived Stress Scale (PSS)"),
-            subtitle:
-                Text("Mide tu nivel de estrés percibido en el último mes."),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => PercivedStressScaleDetailsPage()),
-              );
-            },
-          ),
-          ListTile(
-            textColor: Colors.white,
-            title: Text("Maslach Burnout Inventory (MBI)"),
-            subtitle: Text("Evalúa el nivel de burnout académico."),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => BurnoutInventoryDetailsPage()),
-              );
-            },
-          ),
-          ListTile(
-            textColor: Colors.white,
-            title: Text("Test de Ansiedad Generalizada (GAD-7)"),
-            subtitle: Text("Evalúa los síntomas de ansiedad generalizada."),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => AnxietyTestDetailsPage()),
-              );
-            },
-          ),
-        ],
+      body: Padding(
+        padding: EdgeInsets.all(15),
+        child: ListView(
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                color: Colors.grey,
+                borderRadius: BorderRadius.circular(15),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.white.withOpacity(0.2), // Color de la sombra
+                    spreadRadius: 2, // Extensión de la sombra
+                    blurRadius: 15, // Radio de desenfoque de la sombra
+                    offset: Offset(0, 4), // Desplazamiento de la sombra (x, y)
+                  ),
+                ],
+              ),
+              child: ListTile(
+                leading: Icon(
+                  Icons.text_snippet_outlined,
+                  color: Colors.white,
+                  size: 40,
+                ),
+                textColor: Colors.white,
+                title: Text(
+                  "Percived Stress Scale (PSS)",
+                  style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                ),
+                subtitle:
+                    Text("Mide tu nivel de estrés percibido en el último mes."),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => PercivedStressScaleDetailsPage()),
+                  );
+                },
+              ),
+            ),
+            SizedBox(
+              height: 15,
+            ),
+            Container(
+              decoration: BoxDecoration(
+                color: Colors.grey,
+                borderRadius: BorderRadius.circular(15),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.white.withOpacity(0.2), // Color de la sombra
+                    spreadRadius: 2, // Extensión de la sombra
+                    blurRadius: 15, // Radio de desenfoque de la sombra
+                    offset: Offset(0, 4), // Desplazamiento de la sombra (x, y)
+                  ),
+                ],
+              ),
+              child: ListTile(
+                leading: Icon(
+                  Icons.sentiment_dissatisfied,
+                  color: Colors.white,
+                  size: 40,
+                ),
+                textColor: Colors.white,
+                title: Text(
+                  "Maslach Burnout Inventory (MBI)",
+                  style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                ),
+                subtitle: Text("Evalúa el nivel de burnout académico."),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => BurnoutInventoryDetailsPage()),
+                  );
+                },
+              ),
+            ),
+            SizedBox(
+              height: 15,
+            ),
+            Container(
+              decoration: BoxDecoration(
+                color: Colors.grey,
+                borderRadius: BorderRadius.circular(15),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.white.withOpacity(0.2), // Color de la sombra
+                    spreadRadius: 2, // Extensión de la sombra
+                    blurRadius: 15, // Radio de desenfoque de la sombra
+                    offset: Offset(0, 4), // Desplazamiento de la sombra (x, y)
+                  ),
+                ],
+              ),
+              child: ListTile(
+                leading: Icon(
+                  Icons.sentiment_very_dissatisfied_sharp,
+                  color: Colors.white,
+                  size: 40,
+                ),
+                textColor: Colors.white,
+                title: Text(
+                  "Test de Ansiedad Generalizada (GAD-7)",
+                  style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                ),
+                subtitle: Text("Evalúa los síntomas de ansiedad generalizada."),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => AnxietyTestDetailsPage()),
+                  );
+                },
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
@@ -69,50 +144,71 @@ class PercivedStressScaleDetailsPage extends StatelessWidget {
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              "Descripción",
-              style: TextStyle(
-                  fontSize: 24.0,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white),
-            ),
-            SizedBox(height: 10),
-            Text(
-              "El Percived Stress Scale (PSS) es un test que evalúa tu percepción del estrés en situaciones cotidianas durante el último mes. Se compone de 14 preguntas que examinan la frecuencia con la que te has sentido sobrepasado, nervioso o en control de tu vida.",
-              style: TextStyle(fontSize: 16.0, color: Colors.white),
-            ),
-            SizedBox(height: 20),
-            Text(
-              "Resultados",
-              style: TextStyle(
-                  fontSize: 24.0,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white),
-            ),
-            SizedBox(height: 10),
-            Text(
-              "Los resultados del test se basan en la suma de las puntuaciones de las 14 preguntas. Cada opción va de 0 (Nunca) a 4 (Muy a menudo), por lo que la puntuación máxima posible es de 56. Aquí te explicamos cómo interpretar tu resultado:",
-              style: TextStyle(fontSize: 16.0, color: Colors.white),
-            ),
-            SizedBox(height: 10),
-            Text(
-              "• 0-13: Bajo nivel de estrés\n"
-              "• 14-26: Nivel moderado de estrés\n"
-              "• 27-40: Alto nivel de estrés\n"
-              "• 41-56: Estrés severo",
-              style: TextStyle(fontSize: 16.0, color: Colors.white),
-            ),
-            SizedBox(height: 20),
-            Center(
-              child: ElevatedButton(
-                onPressed: () {
-                  Navigator.popAndPushNamed(context, '/percivedStressScale');
-                },
-                child: Text("Iniciar Test"),
+            Container(
+              height: MediaQuery.of(context).size.height * 0.7,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "Descripción",
+                    style: TextStyle(
+                        fontSize: 24.0,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white),
+                  ),
+                  SizedBox(height: 10),
+                  Text(
+                    "El Percived Stress Scale (PSS) es un test que evalúa tu percepción del estrés en situaciones cotidianas durante el último mes. Se compone de 14 preguntas que examinan la frecuencia con la que te has sentido sobrepasado, nervioso o en control de tu vida.",
+                    style: TextStyle(fontSize: 16.0, color: Colors.white),
+                  ),
+                  SizedBox(height: 20),
+                  Text(
+                    "Resultados",
+                    style: TextStyle(
+                        fontSize: 24.0,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white),
+                  ),
+                  SizedBox(height: 10),
+                  Text(
+                    "Los resultados del test se basan en la suma de las puntuaciones de las 14 preguntas. Cada opción va de 0 (Nunca) a 4 (Muy a menudo), por lo que la puntuación máxima posible es de 56. Aquí te explicamos cómo interpretar tu resultado:",
+                    style: TextStyle(fontSize: 16.0, color: Colors.white),
+                  ),
+                  SizedBox(height: 30),
+                  Center(
+                    //width: MediaQuery.of(context).size.width,
+                    child: Text(
+                      "• 0-13: Bajo nivel de estrés\n"
+                      "• 14-26: Nivel moderado de estrés\n"
+                      "• 27-40: Alto nivel de estrés\n"
+                      "• 41-56: Estrés severo",
+                      style: TextStyle(fontSize: 20.0, color: Colors.white),
+                    ),
+                  ),
+                  SizedBox(height: 20),
+                ],
               ),
             ),
+            Expanded(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Container(
+                    width: MediaQuery.of(context).size.width * 0.8,
+                    child: ElevatedButton(
+                      style: ButtonStyle(),
+                      onPressed: () {
+                        Navigator.popAndPushNamed(
+                            context, '/percivedStressScale');
+                      },
+                      child: Text("Iniciar Test"),
+                    ),
+                  )
+                ],
+              ),
+            )
           ],
         ),
       ),
