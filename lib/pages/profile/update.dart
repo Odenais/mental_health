@@ -109,10 +109,7 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
                               padding: EdgeInsets.all(
                                   5), // Espacio alrededor del botón
                             ),
-                            onPressed: () {
-                              // Navegar a la pantalla de actualización
-                              updateProfile;
-                            },
+                            onPressed: updateProfile,
                             child: Icon(
                               Icons.update, // Ícono superpuesto
                               size: 50, // Tamaño del ícono
@@ -220,11 +217,6 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
                         )
                       ],
                     ),
-                    SizedBox(height: 24),
-                    /*ElevatedButton(
-                      onPressed: updateProfile,
-                      child: Text('Actualizar Datos'),
-                    ),*/
                   ],
                 ),
               ),

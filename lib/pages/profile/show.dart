@@ -118,52 +118,58 @@ class _ProfileShowPageState extends State<ProfileShowPage> {
                       ),
                     ],
                   ),
-                  Text(
-                    '$_nombre_completo',
-                    style: TextStyle(fontSize: 40, color: Colors.white),
-                  ),
-                  SizedBox(height: 8),
-                  Text(
-                    'Apodo: $_apodo',
-                    style: TextStyle(fontSize: 19, color: Colors.white70),
-                  ),
-                  SizedBox(height: 8),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.all(13),
-                        child: Icon(
-                          Icons.email,
-                          color: Colors.white,
+                  Center(
+                    child: Column(
+                      children: [
+                        Text(
+                          '$_nombre_completo',
+                          style: TextStyle(fontSize: 25, color: Colors.white),
                         ),
-                      ),
-                      Text(
-                        '$_email',
-                        style: TextStyle(fontSize: 21, color: Colors.white),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 8),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.all(13),
-                        child: Icon(
-                          Icons.date_range_outlined,
-                          color: Colors.white,
+                        SizedBox(height: 8),
+                        Text(
+                          'Apodo: $_apodo',
+                          style: TextStyle(fontSize: 19, color: Colors.white70),
                         ),
-                      ),
-                      Text(
-                        'Fecha de Nacimiento: $_fecha_de_nacimiento',
-                        style: TextStyle(fontSize: 21, color: Colors.white),
-                      ),
-                    ],
+                        SizedBox(height: 8),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.all(13),
+                              child: Icon(
+                                Icons.email,
+                                color: Colors.white,
+                              ),
+                            ),
+                            Text(
+                              '$_email',
+                              style: TextStyle(fontSize: 21, color: Colors.white),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 8),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.all(13),
+                              child: Icon(
+                                Icons.date_range_outlined,
+                                color: Colors.white,
+                              ),
+                            ),
+                            Text(
+                              'Fecha de Nacimiento: $_fecha_de_nacimiento',
+                              style: TextStyle(fontSize: 21, color: Colors.white),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
-                  SizedBox(height: 16),
+
                   /*ElevatedButton(
                     onPressed: () {
                       // Navegar a la pantalla de actualización
