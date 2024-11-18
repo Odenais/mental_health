@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:mental_health/services/profile.dart';
 
 class PercivedStressScalePage extends StatefulWidget {
+  const PercivedStressScalePage({super.key});
+
   @override
   _PercivedStressScalePageState createState() =>
       _PercivedStressScalePageState();
@@ -9,7 +11,7 @@ class PercivedStressScalePage extends StatefulWidget {
 
 class _PercivedStressScalePageState extends State<PercivedStressScalePage> {
   int _currentQuestionIndex = 0;
-  List<int> _answers =
+  final List<int> _answers =
       List<int>.filled(14, -1); // Lista para almacenar las respuestas
 
   final List<String> _questions = [
@@ -74,8 +76,8 @@ class _PercivedStressScalePageState extends State<PercivedStressScalePage> {
   }
 
   void _createHistorial(String dato1, String dato2) {
-    final Profile _profile = Profile();
-    _profile.addHistoricalDataToFirestore('test', 'historial', dato1, dato2);
+    final Profile profile = Profile();
+    profile.addHistoricalDataToFirestore('test', 'historial', dato1, dato2);
   }
 
   void _previousQuestion() {
@@ -94,12 +96,12 @@ class _PercivedStressScalePageState extends State<PercivedStressScalePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color(0xFF3F4660),
+        backgroundColor: const Color(0xFF3F4660),
         foregroundColor: Colors.white,
-        title: Text("Test de Estrés"),
+        title: const Text("Test de Estrés"),
         actions: [
           IconButton(
-            icon: Icon(Icons.home),
+            icon: const Icon(Icons.home),
             onPressed: () {
               Navigator.pushNamed(
                   context, '/listTests'); // Navegar a la página de inicio
@@ -117,29 +119,32 @@ class _PercivedStressScalePageState extends State<PercivedStressScalePage> {
                 children: [
                   Text(
                     "Pregunta ${_currentQuestionIndex + 1} de ${_questions.length}",
-                    style: TextStyle(
+                    style: const TextStyle(
                         fontSize: 16.0,
                         fontWeight: FontWeight.bold,
                         color: Colors.white),
                   ),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   Text(
                     _questions[_currentQuestionIndex],
-                    style: TextStyle(fontSize: 18.0, color: Colors.white),
+                    style: const TextStyle(fontSize: 18.0, color: Colors.white),
                   ),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   for (int i = 0; i < _options.length; i++)
                     ElevatedButton(
                       onPressed: () =>
                           _selectOption(_optionValues[_options[i]]!),
-                      child: Text(_options[i]),
                       style: ElevatedButton.styleFrom(
-                        side: BorderSide(color: Colors.blue), // Borde azul
-                        padding: EdgeInsets.symmetric(horizontal: 32, vertical: 12), // Tamaño del botón
+                        side:
+                            const BorderSide(color: Colors.blue), // Borde azul
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 32, vertical: 12), // Tamaño del botón
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8), // Bordes redondeados
+                          borderRadius:
+                              BorderRadius.circular(8), // Bordes redondeados
                         ),
                       ),
+                      child: Text(_options[i]),
                     ),
                 ],
               ),
@@ -150,11 +155,11 @@ class _PercivedStressScalePageState extends State<PercivedStressScalePage> {
               padding: const EdgeInsets.all(16.0),
               child: ElevatedButton(
                 onPressed: _previousQuestion,
-                child: Text("<- Regresar a la pregunta anterior <-"),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.grey,
                   foregroundColor: Colors.white,
                 ),
+                child: Text("<- Regresar a la pregunta anterior <-"),
               ),
             ),
         ],
@@ -166,26 +171,26 @@ class _PercivedStressScalePageState extends State<PercivedStressScalePage> {
 class CompletedPage extends StatelessWidget {
   final int score;
 
-  CompletedPage({required this.score});
+  const CompletedPage({super.key, required this.score});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color(0xFF3F4660),
+        backgroundColor: const Color(0xFF3F4660),
         foregroundColor: Colors.white,
-        title: Text("Test Completado"),
+        title: const Text("Test Completado"),
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(
+            const Text(
               "¡Has completado el test!",
               style: TextStyle(fontSize: 24.0, color: Colors.white),
             ),
-            SizedBox(height: 20),
-            Text(
+            const SizedBox(height: 20),
+            const Text(
               "• 0-13: Bajo nivel de estrés\n"
               "• 14-26: Nivel moderado de estrés\n"
               "• 27-40: Alto nivel de estrés\n"
@@ -194,22 +199,22 @@ class CompletedPage extends StatelessWidget {
             ),
             Text(
               "Tu puntaje total es: $score",
-              style: TextStyle(fontSize: 20.0, color: Colors.white),
+              style: const TextStyle(fontSize: 20.0, color: Colors.white),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
                 Navigator.pop(context);
               },
-              child: Text("Volver al inicio"),
+              child: const Text("Volver al inicio"),
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             ElevatedButton(
               onPressed: () {
                 Navigator.pushNamed(
                     context, '/home'); // Navegar a la página de inicio
               },
-              child: Text("Ir al Inicio"),
+              child: const Text("Ir al Inicio"),
             ),
           ],
         ),

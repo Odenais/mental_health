@@ -7,10 +7,10 @@ class SidebarMenu extends StatelessWidget {
   late rive.StateMachineController? stateMachineController;
 
   rive.SMIInput<bool>? clickChange;
+
+  SidebarMenu({super.key});
   @override
   Widget build(BuildContext context) {
-    return Drawer(
-      child: CustomDrawer()
-    );
+    return Drawer(child: CustomDrawer());
   }
 }

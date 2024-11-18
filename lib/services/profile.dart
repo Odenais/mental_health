@@ -54,8 +54,7 @@ class Profile {
 
         // Leer el documento actual para obtener el campo existente
         var docSnapshot = await collection.doc(document.id).get();
-        Map<String, dynamic> data =
-            docSnapshot.data() as Map<String, dynamic>? ?? {};
+        Map<String, dynamic> data = docSnapshot.data() ?? {};
 
         // Obtener el mapa existente o inicializar uno vacío si no existe
         Map<String, dynamic> existingMap =
@@ -90,7 +89,6 @@ class Profile {
       print('Error al actualizar el campo $field: $e');
     }
   }
-
 
   /*
   Future<String?> getApodoByCorreo(String correo) async {
@@ -158,12 +156,14 @@ class Profile {
       print("Error al obtener la fecha de nacimiento: $e");
       return null; // Retornar null en caso de error
     }
+    return null;
   }
 
   Future<Map<String, dynamic>?> getTestByCorreo(String email) async {
     try {
       var collection = _firestore.collection('users');
-      var querySnapshot = await collection.where('Correo', isEqualTo: email).get();
+      var querySnapshot =
+          await collection.where('Correo', isEqualTo: email).get();
 
       if (querySnapshot.docs.isNotEmpty) {
         var document = querySnapshot.docs.first;
@@ -184,8 +184,8 @@ class Profile {
       print("Error al obtener el test: $e");
       return null; // Retornar null en caso de error
     }
+    return null;
   }
-
 
   String initializeEmail() {
     final User? user = FirebaseAuth.instance.currentUser;
@@ -216,7 +216,7 @@ class Profile {
       print('Datos actualizados con éxito');
     } catch (e) {
       print('Error al actualizar los datos: $e');
-      throw e; // Opcional: relanzar la excepción para manejarla en la interfaz de usuario
+      rethrow; // Opcional: relanzar la excepción para manejarla en la interfaz de usuario
     }
   }
 }

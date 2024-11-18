@@ -7,6 +7,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import '../../widgets/menu.dart';
 
 class ProfileShowPage extends StatefulWidget {
+  const ProfileShowPage({super.key});
+
   @override
   _ProfileShowPageState createState() => _ProfileShowPageState();
 }
@@ -27,10 +29,10 @@ class _ProfileShowPageState extends State<ProfileShowPage> {
   }
 
   Future<void> fetchData() async {
-    String email = await _profile.initializeEmail();
+    String email = _profile.initializeEmail();
     try {
       String? apodo = await _profile.getDataByCorreo(email, "Apodo");
-      String? nombre_completo =
+      String? nombreCompleto =
           await _profile.getDataByCorreo(email, "Nombre completo");
 
       // Llamada al nuevo método para obtener la fecha de nacimiento
@@ -49,7 +51,7 @@ class _ProfileShowPageState extends State<ProfileShowPage> {
       // Actualizar el estado con los datos obtenidos
       setState(() {
         _apodo = apodo;
-        _nombre_completo = nombre_completo;
+        _nombre_completo = nombreCompleto;
         _fecha_de_nacimiento = fechaDeNacimientoFormatted;
         _email = email;
       });
@@ -63,7 +65,7 @@ class _ProfileShowPageState extends State<ProfileShowPage> {
     return Scaffold(
       appBar: AppBar(
         foregroundColor: Colors.white,
-        title: Text('Perfil'),
+        title: const Text('Perfil'),
         centerTitle: true,
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -74,104 +76,109 @@ class _ProfileShowPageState extends State<ProfileShowPage> {
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: _email == null
-              ? Center(
-              child:
-              CircularProgressIndicator()) // Muestra un loader mientras carga
+              ? const Center(
+                  child:
+                      CircularProgressIndicator()) // Muestra un loader mientras carga
               : Column(
-            ///mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Container(),
-              Stack(
-                children: [
-                  Container(
-                    child: Icon(
-                      Icons.account_circle,
-                      size: MediaQuery.of(context).size.width * 0.6,
-                      color: Colors.white,
-                    ),
-                  ),
-                  Positioned(
-                    top: MediaQuery.of(context).size.width *
-                        0.45, // Ajusta la posición vertical
-                    left: MediaQuery.of(context).size.width *
-                        0.40, // Ajusta la posición horizontal
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        shape: CircleBorder(), // Define la forma circular
-                        padding: EdgeInsets.all(
-                            5), // Espacio alrededor del botón
-                      ),
-                      onPressed: () {
-                        // Navegar a la pantalla de actualización
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => UpdateProfilePage()),
-                        );
-                      },
-                      child: Icon(
-                        Icons.edit_document, // Ícono superpuesto
-                        size: 50, // Tamaño del ícono
-                        color: Colors.lightGreen, // Color del ícono
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              Center(
-                child: Column(
+                  ///mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Text(
-                      '$_nombre_completo',
-                      style: TextStyle(fontSize: 25, color: Colors.white),
-                    ),
-                    SizedBox(height: 8),
-                    Text(
-                      'Apodo: $_apodo',
-                      style: TextStyle(fontSize: 19, color: Colors.white70),
-                    ),
-                    SizedBox(height: 8),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.center,
+                    Container(),
+                    Stack(
                       children: [
-                        Padding(
-                          padding: EdgeInsets.all(13),
+                        Container(
                           child: Icon(
-                            Icons.email,
+                            Icons.account_circle,
+                            size: MediaQuery.of(context).size.width * 0.6,
                             color: Colors.white,
                           ),
                         ),
-                        Text(
-                          '$_email',
-                          style: TextStyle(fontSize: 21, color: Colors.white),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 8),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.all(13),
-                          child: Icon(
-                            Icons.date_range_outlined,
-                            color: Colors.white,
+                        Positioned(
+                          top: MediaQuery.of(context).size.width *
+                              0.45, // Ajusta la posición vertical
+                          left: MediaQuery.of(context).size.width *
+                              0.40, // Ajusta la posición horizontal
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              shape:
+                                  const CircleBorder(), // Define la forma circular
+                              padding: const EdgeInsets.all(
+                                  5), // Espacio alrededor del botón
+                            ),
+                            onPressed: () {
+                              // Navegar a la pantalla de actualización
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => UpdateProfilePage()),
+                              );
+                            },
+                            child: const Icon(
+                              Icons.edit_document, // Ícono superpuesto
+                              size: 50, // Tamaño del ícono
+                              color: Colors.lightGreen, // Color del ícono
+                            ),
                           ),
                         ),
-                        Text(
-                          'Fecha de Nacimiento: \n $_fecha_de_nacimiento',
-                          style: TextStyle(fontSize: 21, color: Colors.white),
-                        ),
                       ],
                     ),
-                  ],
-                ),
-              ),
+                    Center(
+                      child: Column(
+                        children: [
+                          Text(
+                            '$_nombre_completo',
+                            style: const TextStyle(
+                                fontSize: 25, color: Colors.white),
+                          ),
+                          const SizedBox(height: 8),
+                          Text(
+                            'Apodo: $_apodo',
+                            style: const TextStyle(
+                                fontSize: 19, color: Colors.white70),
+                          ),
+                          const SizedBox(height: 8),
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const Padding(
+                                padding: EdgeInsets.all(13),
+                                child: Icon(
+                                  Icons.email,
+                                  color: Colors.white,
+                                ),
+                              ),
+                              Text(
+                                '$_email',
+                                style: const TextStyle(
+                                    fontSize: 21, color: Colors.white),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 8),
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const Padding(
+                                padding: EdgeInsets.all(13),
+                                child: Icon(
+                                  Icons.date_range_outlined,
+                                  color: Colors.white,
+                                ),
+                              ),
+                              Text(
+                                'Fecha de Nacimiento: \n $_fecha_de_nacimiento',
+                                style: const TextStyle(
+                                    fontSize: 21, color: Colors.white),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
 
-              /*ElevatedButton(
+                    /*ElevatedButton(
                     onPressed: () {
                       // Navegar a la pantalla de actualización
                       Navigator.push(
@@ -182,8 +189,8 @@ class _ProfileShowPageState extends State<ProfileShowPage> {
                     },
                     child: Text('Actualizar datos'),
                   ),*/
-            ],
-          ),
+                  ],
+                ),
         ),
       ),
     );

@@ -12,6 +12,8 @@ import '../../main.dart';
 import '../../widgets/menu.dart';
 
 class HomePage extends StatefulWidget {
+  const HomePage({super.key});
+
   @override
   _HomePageState createState() => _HomePageState();
 }
@@ -118,15 +120,15 @@ class _HomePageState extends State<HomePage> {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color(0xFF3F4660),
+        backgroundColor: const Color(0xFF3F4660),
         foregroundColor: Colors.white,
       ),
       drawer: SidebarMenu(),
       body: ListView(
-        padding: EdgeInsets.all(30),
+        padding: const EdgeInsets.all(30),
         children: [
           Container(
-            decoration: BoxDecoration(),
+            decoration: const BoxDecoration(),
             child: Center(
               child: Text(
                 'Bienvenido, $_apodo',
@@ -139,30 +141,24 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 45,
           ),
           Column(
             children: [
               Container(
-                height: MediaQuery
-                    .of(context)
-                    .size
-                    .height - 600,
-                decoration: BoxDecoration(),
+                height: MediaQuery.of(context).size.height - 600,
+                decoration: const BoxDecoration(),
                 child: ElevatedButton(
                     onPressed: () {},
                     child: Icon(
                       Icons.mic,
-                      size: MediaQuery
-                          .of(context)
-                          .size
-                          .width - 100,
+                      size: MediaQuery.of(context).size.width - 100,
                     )),
               ),
             ],
           ),
-          SizedBox(
+          const SizedBox(
             height: 45,
           ),
           Container(
@@ -170,7 +166,7 @@ class _HomePageState extends State<HomePage> {
             // Ancho del contenedor
             height: 150,
             // Alto del contenedor
-            padding: EdgeInsets.all(8),
+            padding: const EdgeInsets.all(8),
             // Espacio alrededor del contenido
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(12),
@@ -187,23 +183,23 @@ class _HomePageState extends State<HomePage> {
                                 'Test presionado'); // Acción cuando se presiona
                           },
                           child: Container(
-                            margin: EdgeInsets.all(4),
+                            margin: const EdgeInsets.all(4),
                             decoration: BoxDecoration(
                               border: Border.all(
-                                color: Color.fromARGB(
+                                color: const Color.fromARGB(
                                     255, 184, 169, 224), // Color del contorno
                                 width: 3.0, // Grosor del contorno
                               ),
-                              color: Color.fromARGB(255, 97, 85, 135),
+                              color: const Color.fromARGB(255, 97, 85, 135),
                               borderRadius: BorderRadius.circular(8),
                             ),
-                            child: Center(
+                            child: const Center(
                                 child: Text(
-                                  'Test',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                  ),
-                                )),
+                              'Test',
+                              style: TextStyle(
+                                color: Colors.white,
+                              ),
+                            )),
                           ),
                         ),
                       ),
@@ -214,23 +210,23 @@ class _HomePageState extends State<HomePage> {
                                 'Opción 2 presionada'); // Acción cuando se presiona
                           },
                           child: Container(
-                            margin: EdgeInsets.all(4),
+                            margin: const EdgeInsets.all(4),
                             decoration: BoxDecoration(
-                              color: Color.fromARGB(255, 97, 85, 135),
+                              color: const Color.fromARGB(255, 97, 85, 135),
                               border: Border.all(
-                                color: Color.fromARGB(
+                                color: const Color.fromARGB(
                                     255, 184, 169, 224), // Color del contorno
                                 width: 3.0, // Grosor del contorno
                               ),
                               borderRadius: BorderRadius.circular(8),
                             ),
-                            child: Center(
+                            child: const Center(
                                 child: Text(
-                                  'Técnicas de ayuda',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                  ),
-                                )),
+                              'Técnicas de ayuda',
+                              style: TextStyle(
+                                color: Colors.white,
+                              ),
+                            )),
                           ),
                         ),
                       ),
@@ -300,9 +296,10 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
-
 // Splash Screen
 class SplashScreen extends StatefulWidget {
+  const SplashScreen({super.key});
+
   @override
   _SplashScreenState createState() => _SplashScreenState();
 }
@@ -315,7 +312,7 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   _navigateToHome() async {
-    await Future.delayed(Duration(seconds: 3), () {});
+    await Future.delayed(const Duration(seconds: 3), () {});
     Navigator.pushReplacement(
         context, MaterialPageRoute(builder: (context) => ChatbotPage()));
   }
@@ -326,9 +323,7 @@ class _SplashScreenState extends State<SplashScreen> {
       data: ThemeData(
         // Definir aquí el tema local, por ejemplo:
         primaryColor: Colors.blue, // Color primario
-        textTheme: TextTheme(
-
-        ),
+        textTheme: const TextTheme(),
       ),
       child: Scaffold(
         backgroundColor: Colors.white, // Fondo blanco
@@ -337,10 +332,14 @@ class _SplashScreenState extends State<SplashScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Image.asset('assets/pixelcut-export-removebg-preview.png'), // Imagen de la splash screen
-              SizedBox(height: 20), // Espacio entre la imagen y el indicador de carga
-              CircularProgressIndicator(
-                valueColor: AlwaysStoppedAnimation<Color>(Colors.blue), // Cambiar color del indicador de carga
+              Image.asset(
+                  'assets/pixelcut-export-removebg-preview.png'), // Imagen de la splash screen
+              const SizedBox(
+                  height:
+                      20), // Espacio entre la imagen y el indicador de carga
+              const CircularProgressIndicator(
+                valueColor: AlwaysStoppedAnimation<Color>(
+                    Colors.blue), // Cambiar color del indicador de carga
               ),
             ],
           ),
@@ -348,6 +347,4 @@ class _SplashScreenState extends State<SplashScreen> {
       ),
     );
   }
-
-
 }

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import '../../widgets/menu.dart';
 
 class planeAtentionMeditation extends StatefulWidget {
+  const planeAtentionMeditation({super.key});
+
   @override
   _planeAtentionMeditation createState() => _planeAtentionMeditation();
 }
@@ -11,14 +13,14 @@ class _planeAtentionMeditation extends State<planeAtentionMeditation> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color(0xFF3F4660),
+        backgroundColor: const Color(0xFF3F4660),
         foregroundColor: Colors.white,
-        title: Text("Meditación de atención plena"),
+        title: const Text("Meditación de atención plena"),
       ),
       drawer: SidebarMenu(),
       body: Container(
         //height: MediaQuery.of(context).size.height*0.7,
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           color: Color(0xFF3F4660),
         ),
         child: Column(
@@ -28,8 +30,8 @@ class _planeAtentionMeditation extends State<planeAtentionMeditation> {
                 Container(
                   height: MediaQuery.of(context).size.height * 0.7,
                   width: MediaQuery.of(context).size.width,
-                  color: Color(0xFF3F4660),
-                  child: Center(
+                  color: const Color(0xFF3F4660),
+                  child: const Center(
                     child: Column(
                       children: [
                         SizedBox(

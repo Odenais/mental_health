@@ -16,6 +16,8 @@ import 'package:rive/rive.dart' as rive;
 import '../../widgets/menu.dart';
 
 class ChatbotPage extends StatefulWidget {
+  const ChatbotPage({super.key});
+
   @override
   _ChatbotPageState createState() => _ChatbotPageState();
 }
@@ -181,7 +183,7 @@ class _ChatbotPageState extends State<ChatbotPage> {
       loading = true;
     });
 
-    final apiKey = Config.apiKey;
+    const apiKey = Config.apiKey;
     if (apiKey.isEmpty) {
       addMessage('System', 'API key is not set.');
       return;
@@ -228,7 +230,6 @@ class _ChatbotPageState extends State<ChatbotPage> {
       isSpeaking(true);
       reset(true);
       // Llamar al método para que lea el texto del bot
-
     } catch (e) {
       addMessage(
           'User', query); // Mostrar la consulta completa en caso de error
@@ -254,7 +255,7 @@ class _ChatbotPageState extends State<ChatbotPage> {
   }
 
   void scrollToEnd() {
-    Future.delayed(Duration(milliseconds: 100), () {
+    Future.delayed(const Duration(milliseconds: 100), () {
       if (scrollController.hasClients) {
         scrollController.jumpTo(scrollController.position.maxScrollExtent);
       }
@@ -272,8 +273,8 @@ class _ChatbotPageState extends State<ChatbotPage> {
       return Align(
         alignment: isUser ? Alignment.centerRight : Alignment.centerLeft,
         child: Container(
-          margin: EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
-          padding: EdgeInsets.all(8.0),
+          margin: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
+          padding: const EdgeInsets.all(8.0),
           decoration: BoxDecoration(
             color: Colors.grey[300],
             borderRadius: BorderRadius.circular(12.0),
@@ -287,10 +288,12 @@ class _ChatbotPageState extends State<ChatbotPage> {
     return Align(
       alignment: isUser ? Alignment.centerRight : Alignment.centerLeft,
       child: Container(
-        margin: EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
-        padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 14.0),
+        margin: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
+        padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 14.0),
         decoration: BoxDecoration(
-          color: isUser ? Color.fromARGB(255, 170, 149, 208) : Colors.grey[300],
+          color: isUser
+              ? const Color.fromARGB(255, 170, 149, 208)
+              : Colors.grey[300],
           borderRadius: BorderRadius.circular(12.0),
         ),
         child: RichText(
@@ -320,17 +323,17 @@ class _ChatbotPageState extends State<ChatbotPage> {
         // Para viñetas con negritas: * **texto**
         spans.add(TextSpan(
           text: "• ${match.group(2)}",
-          style: TextStyle(fontWeight: FontWeight.bold),
+          style: const TextStyle(fontWeight: FontWeight.bold),
         ));
       } else if (match.group(3) != null) {
         // Solo texto en negritas: **texto**
         spans.add(TextSpan(
           text: match.group(3),
-          style: TextStyle(fontWeight: FontWeight.bold),
+          style: const TextStyle(fontWeight: FontWeight.bold),
         ));
       } else if (match.group(4) != null) {
         // Solo viñetas sin negritas: * texto
-        spans.add(TextSpan(
+        spans.add(const TextSpan(
           text: "*",
           style: TextStyle(fontWeight: FontWeight.bold),
         ));
@@ -369,7 +372,7 @@ class _ChatbotPageState extends State<ChatbotPage> {
   }
 
   Future<String?> getApodo() async {
-    String correo = await _profile.initializeEmail();
+    String correo = _profile.initializeEmail();
     return _profile.getDataByCorreo(correo, "Apodo");
   }
 
@@ -377,7 +380,7 @@ class _ChatbotPageState extends State<ChatbotPage> {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(message),
-        duration: Duration(seconds: 2),
+        duration: const Duration(seconds: 2),
       ),
     );
   }
@@ -501,12 +504,12 @@ class _ChatbotPageState extends State<ChatbotPage> {
       appBar: AppBar(
         actions: [
           Padding(
-            padding: EdgeInsets.all(5),
+            padding: const EdgeInsets.all(5),
             child: CircleAvatar(
               radius: 25,
-              backgroundColor: Color.fromARGB(255, 125, 209, 193),
+              backgroundColor: const Color.fromARGB(255, 125, 209, 193),
               child: IconButton(
-                icon: Icon(Icons.music_note),
+                icon: const Icon(Icons.music_note),
                 onPressed: () {
                   addMessage(
                       "Music", getRandomElement(obtenerListaAleatoria()));
@@ -523,7 +526,7 @@ class _ChatbotPageState extends State<ChatbotPage> {
       ),
       drawer: SidebarMenu(),
       body: Container(
-        decoration: BoxDecoration(color: Colors.black),
+        decoration: const BoxDecoration(color: Colors.black),
         child: Stack(
           children: [
             Positioned.fill(
@@ -547,9 +550,9 @@ class _ChatbotPageState extends State<ChatbotPage> {
             ),
             Column(
               children: [
-                Padding(padding: EdgeInsets.only(top: 90)),
+                const Padding(padding: EdgeInsets.only(top: 90)),
                 Expanded(
-                  child: Container(
+                  child: SizedBox(
                     width: MediaQuery.of(context).size.width,
                     child: GestureDetector(
                       onTap: startListening,
@@ -585,8 +588,8 @@ class _ChatbotPageState extends State<ChatbotPage> {
                 Expanded(
                   child: ListView.builder(
                     controller: scrollController,
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 8.0, vertical: 8.0),
                     itemCount: messages.length,
                     itemBuilder: (context, index) {
                       return buildMessage(messages[index]);
@@ -600,20 +603,20 @@ class _ChatbotPageState extends State<ChatbotPage> {
                     children: [
                       Expanded(
                         child: TextField(
-                          style: TextStyle(color: Colors.white),
+                          style: const TextStyle(color: Colors.white),
                           controller: textController,
                           decoration: InputDecoration(
                             enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(15.0),
-                              borderSide: BorderSide(color: Colors.white),
+                              borderSide: const BorderSide(color: Colors.white),
                             ),
                             focusedBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(15.0),
-                              borderSide: BorderSide(
+                              borderSide: const BorderSide(
                                   color: Color.fromARGB(255, 170, 149, 208)),
                             ),
                             hintText: 'Escribe un mensaje',
-                            hintStyle: TextStyle(color: Colors.white),
+                            hintStyle: const TextStyle(color: Colors.white),
                           ),
                           maxLines: null,
                           onSubmitted: handleSubmitted,
@@ -622,26 +625,26 @@ class _ChatbotPageState extends State<ChatbotPage> {
                           cursorColor: Colors.white,
                         ),
                       ),
-                      SizedBox(width: 8.0),
+                      const SizedBox(width: 8.0),
                       CircleAvatar(
                         radius: 25,
                         backgroundColor: Colors.white,
                         child: IconButton(
-                          icon: Icon(Icons.send),
+                          icon: const Icon(Icons.send),
                           onPressed: () {
                             handleSubmitted(textController.text);
                             isChatting(true);
                             isSpeaking(true);
                           },
-                          color: Color.fromARGB(255, 97, 85, 133),
+                          color: const Color.fromARGB(255, 97, 85, 133),
                         ),
                       ),
-                      SizedBox(width: 8.0),
+                      const SizedBox(width: 8.0),
                       CircleAvatar(
                         radius: 25,
                         backgroundColor: Colors.redAccent,
                         child: IconButton(
-                          icon: Icon(Icons.stop),
+                          icon: const Icon(Icons.stop),
                           onPressed: _stopSpeech,
                           color: Colors.white,
                         ),

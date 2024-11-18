@@ -24,6 +24,8 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -31,7 +33,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.blueGrey,
-        scaffoldBackgroundColor: Color(0xFF3F4660),
+        scaffoldBackgroundColor: const Color(0xFF3F4660),
         textTheme: TextTheme(
           bodyMedium: TextStyle(color: Colors.grey[800], fontSize: 16),
         ),
@@ -62,6 +64,8 @@ class MyApp extends StatelessWidget {
 
 // AuthWrapper que verifica el estado de autenticación del usuario
 class AuthWrapper extends StatefulWidget {
+  const AuthWrapper({super.key});
+
   @override
   _AuthWrapperState createState() => _AuthWrapperState();
 }

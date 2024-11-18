@@ -32,7 +32,7 @@ Future<Map<String, String?>> searchYoutubeVideo(String query) async {
 class AudioPlayerComponent extends StatefulWidget {
   final String query;
 
-  const AudioPlayerComponent({Key? key, required this.query}) : super(key: key);
+  const AudioPlayerComponent({super.key, required this.query});
 
   @override
   _AudioPlayerComponentState createState() => _AudioPlayerComponentState();
@@ -124,7 +124,7 @@ class _AudioPlayerComponentState extends State<AudioPlayerComponent> {
           children: [
             Expanded(
                 child: Container(
-              constraints: BoxConstraints(maxHeight: 130),
+              constraints: const BoxConstraints(maxHeight: 130),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 // Centra verticalmente
@@ -136,7 +136,7 @@ class _AudioPlayerComponentState extends State<AudioPlayerComponent> {
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(12.0),
                         // Borde redondeado
-                        boxShadow: [
+                        boxShadow: const [
                           BoxShadow(color: Colors.black26, blurRadius: 8.0)
                         ], // Sombra opcional
                       ),
@@ -152,18 +152,18 @@ class _AudioPlayerComponentState extends State<AudioPlayerComponent> {
                 ],
               ),
             )),
-            SizedBox(width: 16),
+            const SizedBox(width: 16),
             Expanded(
                 child: Column(
               children: [
                 if (_title.isNotEmpty)
                   Text(
-                    "🎶 " + _title,
-                    style: TextStyle(fontSize: 16),
+                    "🎶 $_title",
+                    style: const TextStyle(fontSize: 16),
                     // Añade puntos suspensivos si el texto es demasiado largo
                     softWrap: true,
                   ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 Row(
@@ -171,7 +171,7 @@ class _AudioPlayerComponentState extends State<AudioPlayerComponent> {
                   children: [
                     CircleAvatar(
                       radius: 20,
-                      backgroundColor: Color.fromARGB(255, 170, 149, 208),
+                      backgroundColor: const Color.fromARGB(255, 170, 149, 208),
                       child: IconButton(
                         color: Colors.black,
                         iconSize: 25,
@@ -179,14 +179,14 @@ class _AudioPlayerComponentState extends State<AudioPlayerComponent> {
                         onPressed: togglePlayPause,
                       ),
                     ),
-                    SizedBox(width: 16),
+                    const SizedBox(width: 16),
                     CircleAvatar(
                       radius: 20,
                       backgroundColor: Colors.redAccent,
                       child: IconButton(
                         iconSize: 25,
                         color: Colors.black,
-                        icon: Icon(Icons.stop),
+                        icon: const Icon(Icons.stop),
                         onPressed: stopAudio,
                       ),
                     ),
@@ -196,7 +196,7 @@ class _AudioPlayerComponentState extends State<AudioPlayerComponent> {
             )),
           ],
         ),
-        SizedBox(height: 8),
+        const SizedBox(height: 8),
       ],
     );
   }

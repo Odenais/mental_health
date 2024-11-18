@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:mental_health/services/auth.dart';
 
 class LoginPage extends StatefulWidget {
+  const LoginPage({super.key});
+
   @override
   _LoginPageState createState() => _LoginPageState();
 }
@@ -56,7 +58,7 @@ class _LoginPageState extends State<LoginPage> {
       } else {
         // Mostrar un mensaje de error si el inicio de sesión falla
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error en el inicio de sesión')),
+          const SnackBar(content: Text('Error en el inicio de sesión')),
         );
       }
     }
@@ -66,7 +68,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Iniciar Sesión'),
+        title: const Text('Iniciar Sesión'),
         centerTitle: true,
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -88,7 +90,7 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 textAlign: TextAlign.center,
               ),
-              SizedBox(height: 24),
+              const SizedBox(height: 24),
               TextFormField(
                 decoration: InputDecoration(
                   labelText: 'Correo Electrónico',
@@ -106,7 +108,7 @@ class _LoginPageState extends State<LoginPage> {
                   _email = value;
                 },
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               TextFormField(
                 decoration: InputDecoration(
                   labelText: 'Contraseña',
@@ -124,22 +126,22 @@ class _LoginPageState extends State<LoginPage> {
                   _password = value;
                 },
               ),
-              SizedBox(height: 32),
+              const SizedBox(height: 32),
               _isLoading
-                  ? Center(child: CircularProgressIndicator())
+                  ? const Center(child: CircularProgressIndicator())
                   : ElevatedButton(
-                onPressed: _submitForm,
-                child: Text('Iniciar Sesión'),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.blueAccent,
-                  padding: EdgeInsets.symmetric(vertical: 16),
-                  textStyle: TextStyle(fontSize: 18),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                ),
-              ),
-              SizedBox(height: 16),
+                      onPressed: _submitForm,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.blueAccent,
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                        textStyle: const TextStyle(fontSize: 18),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                      child: Text('Iniciar Sesión'),
+                    ),
+              const SizedBox(height: 16),
               TextButton(
                 onPressed: () {
                   // Navegar a la página de registro

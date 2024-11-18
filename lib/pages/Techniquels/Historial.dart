@@ -4,13 +4,15 @@ import 'package:mental_health/services/profile.dart';
 import 'package:mental_health/widgets/menu.dart';
 
 class TestHistoryPage extends StatefulWidget {
+  const TestHistoryPage({super.key});
+
   @override
   _TestHistoryPageState createState() => _TestHistoryPageState();
 }
 
 class _TestHistoryPageState extends State<TestHistoryPage> {
-  List<Map<String, dynamic>> _testHistory = [];
-  Profile _profile = Profile();
+  final List<Map<String, dynamic>> _testHistory = [];
+  final Profile _profile = Profile();
   String? _email;
 
   @override
@@ -36,30 +38,38 @@ class _TestHistoryPageState extends State<TestHistoryPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color(0xFF3F4660),
+        backgroundColor: const Color(0xFF3F4660),
         foregroundColor: Colors.white,
-        title: Text("Historial de Tests"),
+        title: const Text("Historial de Tests"),
       ),
       drawer: SidebarMenu(),
       body: FutureBuilder<Map<String, dynamic>?>(
-        future: _profile.getTestByCorreo(_email!), // Llamada al método para obtener los datos
+        future: _profile.getTestByCorreo(
+            _email!), // Llamada al método para obtener los datos
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
-            return Center(child: Text("Error al obtener datos", style: TextStyle(color: Colors.red)));
+            return const Center(
+                child: Text("Error al obtener datos",
+                    style: TextStyle(color: Colors.red)));
           } else if (!snapshot.hasData || snapshot.data == null) {
-            return Center(child: Text("No hay historial disponible", style: TextStyle(color: Colors.grey)));
+            return const Center(
+                child: Text("No hay historial disponible",
+                    style: TextStyle(color: Colors.grey)));
           } else {
             var testData = snapshot.data!;
-            var historial = testData['historial'] as List<dynamic>?; // Obtener la lista de historial
+            var historial = testData['historial']
+                as List<dynamic>?; // Obtener la lista de historial
 
             if (historial == null || historial.isEmpty) {
-              return Center(child: Text("No hay datos de historial disponibles", style: TextStyle(color: Colors.grey)));
+              return const Center(
+                  child: Text("No hay datos de historial disponibles",
+                      style: TextStyle(color: Colors.grey)));
             }
 
             return ListView.builder(
-              padding: EdgeInsets.all(16),
+              padding: const EdgeInsets.all(16),
               itemCount: historial.length,
               itemBuilder: (context, index) {
                 var historialItem = historial[index];
@@ -70,29 +80,32 @@ class _TestHistoryPageState extends State<TestHistoryPage> {
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),
                     ),
-                    margin: EdgeInsets.symmetric(vertical: 8),
+                    margin: const EdgeInsets.symmetric(vertical: 8),
                     elevation: 4,
                     child: ListTile(
-                      leading: Icon(Icons.history, color: Colors.blueAccent),
+                      leading:
+                          const Icon(Icons.history, color: Colors.blueAccent),
                       title: Text(
                         "Test ${index + 1}",
-                        style: TextStyle(fontWeight: FontWeight.bold),
+                        style: const TextStyle(fontWeight: FontWeight.bold),
                       ),
                       subtitle: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          SizedBox(height: 8),
+                          const SizedBox(height: 8),
                           Text("Nombre del test: ${historialItem['dato1']}"),
                           Text("Resultado: ${historialItem['dato2']}"),
                           Text("Fecha: ${historialItem['fecha']}"),
                         ],
                       ),
-                      trailing: Icon(Icons.arrow_forward_ios, color: Colors.grey),
+                      trailing: const Icon(Icons.arrow_forward_ios,
+                          color: Colors.grey),
                       onTap: () {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => HistoryDetailPage(historyItem: historialItem),
+                            builder: (context) =>
+                                HistoryDetailPage(historyItem: historialItem),
                           ),
                         );
                       },
@@ -100,8 +113,11 @@ class _TestHistoryPageState extends State<TestHistoryPage> {
                   );
                 } else {
                   return ListTile(
-                    title: Text("Historial ${index + 1}", style: TextStyle(color: Colors.white)),
-                    subtitle: Text("Dato no disponible o formato incorrecto", style: TextStyle(color: Colors.white)),
+                    title: Text("Historial ${index + 1}",
+                        style: const TextStyle(color: Colors.white)),
+                    subtitle: const Text(
+                        "Dato no disponible o formato incorrecto",
+                        style: TextStyle(color: Colors.white)),
                   );
                 }
               },
@@ -117,20 +133,24 @@ class _TestHistoryPageState extends State<TestHistoryPage> {
 class HistoryDetailPage extends StatelessWidget {
   final Map<String, dynamic> historyItem;
 
-  HistoryDetailPage({required this.historyItem});
+  const HistoryDetailPage({super.key, required this.historyItem});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color(0xFF3F4660),
-        iconTheme: IconThemeData(color: Colors.white), // Color de la flecha de retorno
-        title: Text("Detalles del Test", style: TextStyle(color: Colors.white),),
+        backgroundColor: const Color(0xFF3F4660),
+        iconTheme: const IconThemeData(
+            color: Colors.white), // Color de la flecha de retorno
+        title: const Text(
+          "Detalles del Test",
+          style: TextStyle(color: Colors.white),
+        ),
       ),
       body: Padding(
-        padding: EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16.0),
         child: Center(
-          child: Container(
+          child: SizedBox(
             width: 300, // Aquí defines el ancho del Card
             child: Card(
               shape: RoundedRectangleBorder(
@@ -142,14 +162,14 @@ class HistoryDetailPage extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
+                    const Text(
                       "Detalles del Test",
                       style: TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    SizedBox(height: 16),
+                    const SizedBox(height: 16),
                     Text("Fecha: ${historyItem['fecha']}"),
                     Text("Nombre del test: ${historyItem['dato1']}"),
                     Text("Resultado: ${historyItem['dato2']}"),
@@ -162,5 +182,4 @@ class HistoryDetailPage extends StatelessWidget {
       ),
     );
   }
-
 }

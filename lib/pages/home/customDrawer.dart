@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:rive/rive.dart';
 
 class CustomDrawer extends StatefulWidget {
+  const CustomDrawer({super.key});
+
   @override
   _CustomDrawerState createState() => _CustomDrawerState();
 }
@@ -23,14 +25,15 @@ class _CustomDrawerState extends State<CustomDrawer> {
     // Set dayInput based on the hour
     if (hour > 7) {
       _dayInput?.change(true);
-    } else{
+    } else {
       _dayInput?.change(false);
     }
   }
 
   void _onRiveInit(Artboard artboard) {
     try {
-      final controller = StateMachineController.fromArtboard(artboard, 'Button_Animation');
+      final controller =
+          StateMachineController.fromArtboard(artboard, 'Button_Animation');
       if (controller != null) {
         artboard.addController(controller);
         _stateMachineController = controller;
@@ -71,43 +74,43 @@ class _CustomDrawerState extends State<CustomDrawer> {
                   ),
                 ),
                 ListTile(
-                  leading: Icon(Icons.account_circle),
-                  title: Text('Perfil'),
+                  leading: const Icon(Icons.account_circle),
+                  title: const Text('Perfil'),
                   onTap: () {
                     Navigator.popAndPushNamed(context, '/profileShow');
                   },
                 ),
                 ListTile(
-                  leading: Icon(Icons.chat),
-                  title: Text('Chat Bot'),
+                  leading: const Icon(Icons.chat),
+                  title: const Text('Chat Bot'),
                   onTap: () {
                     Navigator.popAndPushNamed(context, '/chat');
                   },
                 ),
                 ListTile(
-                  leading: Icon(Icons.list),
-                  title: Text('Lista de tests'),
+                  leading: const Icon(Icons.list),
+                  title: const Text('Lista de tests'),
                   onTap: () {
                     Navigator.popAndPushNamed(context, '/listTests');
                   },
                 ),
                 ListTile(
-                  leading: Icon(Icons.list),
-                  title: Text('Historial'),
+                  leading: const Icon(Icons.list),
+                  title: const Text('Historial'),
                   onTap: () {
                     Navigator.popAndPushNamed(context, '/historial');
                   },
                 ),
                 ListTile(
-                  leading: Icon(Icons.list_alt),
-                  title: Text('Lista de técnicas'),
+                  leading: const Icon(Icons.list_alt),
+                  title: const Text('Lista de técnicas'),
                   onTap: () {
                     Navigator.popAndPushNamed(context, '/listTechniquels');
                   },
                 ),
                 ListTile(
-                  leading: Icon(Icons.logout),
-                  title: Text('Cerrar Sesión'),
+                  leading: const Icon(Icons.logout),
+                  title: const Text('Cerrar Sesión'),
                   onTap: () async {
                     await FirebaseAuth.instance.signOut();
                     Navigator.popAndPushNamed(context, '/login');

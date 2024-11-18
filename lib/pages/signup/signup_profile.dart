@@ -4,6 +4,8 @@ import 'package:intl/intl.dart';
 import 'package:firebase_auth/firebase_auth.dart'; // Importa Firebase Auth
 
 class SignupProfilePage extends StatefulWidget {
+  const SignupProfilePage({super.key});
+
   @override
   _SignupProfilePageState createState() => _SignupProfilePageState();
 }
@@ -80,7 +82,7 @@ class _SignupProfilePageState extends State<SignupProfilePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Perfil'),
+        title: const Text('Perfil'),
         centerTitle: true,
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -103,7 +105,7 @@ class _SignupProfilePageState extends State<SignupProfilePage> {
                   ),
                   textAlign: TextAlign.center,
                 ),
-                SizedBox(height: 24),
+                const SizedBox(height: 24),
                 TextFormField(
                   controller: _nombreCompletoController,
                   decoration: customInputDecoration(
@@ -118,7 +120,7 @@ class _SignupProfilePageState extends State<SignupProfilePage> {
                     return null;
                   },
                 ),
-                SizedBox(height: 16),
+                const SizedBox(height: 16),
                 TextFormField(
                   controller: _apodoController,
                   decoration: customInputDecoration(
@@ -133,7 +135,7 @@ class _SignupProfilePageState extends State<SignupProfilePage> {
                     return null;
                   },
                 ),
-                SizedBox(height: 16),
+                const SizedBox(height: 16),
                 GestureDetector(
                   onTap: () async {
                     DateTime? pickedDate = await showDatePicker(
@@ -166,7 +168,7 @@ class _SignupProfilePageState extends State<SignupProfilePage> {
                     ),
                   ),
                 ),
-                SizedBox(height: 16),
+                const SizedBox(height: 16),
                 TextFormField(
                   controller: _emailController,
                   decoration: customInputDecoration(
@@ -176,20 +178,20 @@ class _SignupProfilePageState extends State<SignupProfilePage> {
                   keyboardType: TextInputType.emailAddress,
                   enabled: false, // Hacer el campo de solo lectura
                 ),
-                SizedBox(height: 32),
+                const SizedBox(height: 32),
                 _isLoading
-                    ? Center(child: CircularProgressIndicator())
+                    ? const Center(child: CircularProgressIndicator())
                     : ElevatedButton(
                         onPressed: _submitForm,
-                        child: Text('Registrar'),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.blueAccent,
-                          padding: EdgeInsets.symmetric(vertical: 16),
-                          textStyle: TextStyle(fontSize: 18),
+                          padding: const EdgeInsets.symmetric(vertical: 16),
+                          textStyle: const TextStyle(fontSize: 18),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12),
                           ),
                         ),
+                        child: Text('Registrar'),
                       ),
               ],
             ),
